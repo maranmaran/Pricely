@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Common.Exceptions;
+﻿using Common.Exceptions;
 using FluentValidation;
 using ItemService.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ItemService.API.Middleware
 {
@@ -45,10 +45,10 @@ namespace ItemService.API.Middleware
                 Message = exception.Message,
             };
 
-            if (exception is FetchException fetchEx)
+            if (exception is NotFoundException notFoundEx)
             {
                 errorDetails.Status = HttpStatusCode.NotFound;
-                errorDetails.Message = fetchEx.Message;
+                errorDetails.Message = notFoundEx.Message;
             }
 
             if (exception is ValidationException validationEx)

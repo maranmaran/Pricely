@@ -39,6 +39,7 @@ namespace ItemService.API
             services.ConfigureMediatR();
             services.ConfigureSwagger();
             services.ConfigureLazyCache();
+            services.ConfigureAutomapper();
             NLogBuilder.ConfigureNLog("nlog.config");
 
             //internal libs

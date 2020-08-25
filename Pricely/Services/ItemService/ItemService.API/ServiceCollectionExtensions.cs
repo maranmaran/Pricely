@@ -1,4 +1,5 @@
-﻿using FluentValidation.AspNetCore;
+﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using ItemService.API.LibraryConfigurations.MediatR;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -27,8 +28,7 @@ namespace ItemService.API
         {
             var assemblies = new[]
             {
-                //Assembly.GetAssembly(typeof(GetProductsQuery)),
-                Assembly.GetExecutingAssembly()
+                Assembly.GetAssembly(typeof(Business.Mappings)),
             };
 
             services.AddMediatR(assemblies.ToArray());
@@ -66,8 +66,7 @@ namespace ItemService.API
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(new[]
                 {
-                    //Assembly.GetAssembly(typeof(GetProductsQuery)),
-                    Assembly.GetExecutingAssembly()
+                    Assembly.GetAssembly(typeof(Business.Mappings)),
                 }))
                 .AddNewtonsoftJson(options =>
                 {
@@ -123,6 +122,22 @@ namespace ItemService.API
         public static void ConfigureHealthCheck(this IServiceCollection services)
         {
             services.AddHealthChecks();
+        }
+
+        /// <summary>
+        /// Configures automapper on service level
+        /// </summary>
+        public static void ConfigureAutomapper(this IServiceCollection services)
+        {
+            services.AddSingleton<IMapper>(provider =>
+            {
+                var config = new MapperConfiguration(c =>
+                {
+                    c.AddProfile<Business.Mappings>();
+                });
+
+                return config.CreateMapper();
+            });
         }
 
     }

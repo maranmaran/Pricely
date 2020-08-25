@@ -10,4 +10,6 @@ namespace ItemService.Domain.Entities
         public Guid IngredientId { get; set; }
         public virtual Ingredient Ingredient { get; set; }
     }
+
+
 }

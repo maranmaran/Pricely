@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace ItemService.Domain.Entities
 {
@@ -7,7 +7,6 @@ namespace ItemService.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public Guid ItemIngredientId { get; set; }
-        public virtual ItemIngredient ItemIngredient { get; set; }
+        public virtual ICollection<ItemIngredient> Items { get; set; } = new HashSet<ItemIngredient>();
     }
 }

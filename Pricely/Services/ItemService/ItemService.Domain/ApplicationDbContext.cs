@@ -1,4 +1,5 @@
-﻿using ItemService.Domain.Seed;
+﻿using ItemService.Domain.Entities;
+using ItemService.Domain.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,12 @@ namespace ItemService.Domain
 {
     public class ApplicationDbContext : DbContext
     {
-        //public DbSet<Pokemon> Pokemons { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Allergen> Allergens { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ItemAllergen> ItemAllergens { get; set; }
+        public DbSet<ItemIngredient> ItemIngredients { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -51,7 +57,7 @@ namespace ItemService.Domain
 
             // Build config
             var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../PokemonAPI"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../ItemService.API"))
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
                 .Build();
@@ -60,7 +66,7 @@ namespace ItemService.Domain
 
             // Here we create the DbContextOptionsBuilder manually.        
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseNpgsql(connectionString);
+            builder.UseSqlServer(connectionString);
 
             // Create our DbContext.
             return new ApplicationDbContext(builder.Options);

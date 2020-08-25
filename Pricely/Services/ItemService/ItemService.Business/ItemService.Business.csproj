@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.1.2" />
     <PackageReference Include="MediatR" Version="8.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
@@ -15,11 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\CreateItem\" />
-    <Folder Include="Commands\DeleteItem\" />
-    <Folder Include="Commands\UpdateItem\" />
-    <Folder Include="Queries\GetItem\" />
-    <Folder Include="Queries\GetItems\" />
+    <Folder Include="Commands\Items\DeleteItem\" />
+    <Folder Include="Commands\Items\UpdateItem\" />
+    <Folder Include="Queries\Items\GetItem\" />
   </ItemGroup>
 
 </Project>

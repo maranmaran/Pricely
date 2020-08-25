@@ -9,7 +9,7 @@ namespace ItemService.Domain.Configurations
         public void Configure(EntityTypeBuilder<TEntityBase> builder)
         {
             builder.Property(x => x.DateCreated)
-                .HasDefaultValueSql("getdateutc()");
+                .HasDefaultValueSql("getutcdate()");
 
             builder.Property(x => x.DateModified)
                 .HasDefaultValueSql("getutcdate()")

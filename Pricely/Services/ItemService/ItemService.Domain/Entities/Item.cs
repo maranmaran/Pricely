@@ -13,10 +13,10 @@ namespace ItemService.Domain.Entities
         public string PictureUrl { get; set; }
         public string PicturePath { get; set; }
 
-        public Guid TypeId { get; set; }
-        public virtual Category Type { get; set; }
+        public Guid CategoryId { get; set; }
+        public virtual Category Category { get; set; }
 
-        public virtual ICollection<ItemIngredient> Ingredients { get; set; }
-        public virtual ICollection<ItemAllergen> Allergens { get; set; }
+        public virtual ICollection<ItemIngredient> Ingredients { get; set; } = new HashSet<ItemIngredient>();
+        public virtual ICollection<ItemAllergen> Allergens { get; set; } = new HashSet<ItemAllergen>();
     }
 }

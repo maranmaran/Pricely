@@ -8,7 +8,12 @@ namespace ItemService.Domain.Configurations
     {
         public override void ConfigureEntity(EntityTypeBuilder<Ingredient> builder)
         {
-            throw new NotImplementedException();
+            builder.Property(x => x.Name).HasMaxLength(250);
+
+            builder
+                .HasMany(x => x.Items)
+                .WithOne(x => x.Ingredient)
+                .HasForeignKey(x => x.IngredientId);
         }
     }
 }
