@@ -43,6 +43,7 @@ namespace ItemService.API
             NLogBuilder.ConfigureNLog("nlog.config");
 
             //internal libs
+            services.ConfigureEventBus(Configuration);
 
             // system configuration
             services.ConfigureResponseCompression(); // response compression
@@ -85,6 +86,11 @@ namespace ItemService.API
                 endpoints.MapHealthChecks("hc");
                 endpoints.MapControllers();
             });
+
+
+            // DEMO: subscribe handlers
+            //var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            //eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
         }
     }
 }

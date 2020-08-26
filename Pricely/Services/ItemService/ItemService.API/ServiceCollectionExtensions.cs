@@ -1,4 +1,9 @@
-﻿using AutoMapper;
+﻿using Autofac;
+using AutoMapper;
+using EventBus.Infrastructure;
+using EventBus.Infrastructure.Interfaces;
+using EventBus.RabbitMQ;
+using EventBus.RabbitMQ.Interfaces;
 using FluentValidation.AspNetCore;
 using ItemService.API.LibraryConfigurations.MediatR;
 using MediatR;
@@ -6,10 +11,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using RabbitMQ.Client;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -140,5 +147,94 @@ namespace ItemService.API
             });
         }
 
+        /// <summary>
+        /// Configures event bus
+        /// </summary>
+        public static void ConfigureEventBus(this IServiceCollection services, IConfiguration configuration)
+        {
+            var subscriptionClientName = configuration["SubscriptionClientName"];
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+
+                throw new NotImplementedException("Azure service bus not implemented");
+
+                //services.AddSingleton<IServiceBusPersisterConnection>(sp =>
+                //{
+                //    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
+
+                //    var serviceBusConnectionString = configuration["EventBusConnection"];
+                //    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
+
+                //    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                //});
+
+                //services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                //{
+                //    var serviceBusPersisterConnection = sp.GetRequiredService<IPersistentConnection>();
+                //    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                //    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                //    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                //    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                //        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                //});
+            }
+            else
+            {
+                services.AddSingleton<IPersistentConnection>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DefaultPersistentConnection>>();
+
+                    var factory = new ConnectionFactory()
+                    {
+                        HostName = configuration["EventBusConnection"],
+                        DispatchConsumersAsync = true
+                    };
+
+                    if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))
+                    {
+                        factory.UserName = configuration["EventBusUserName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(configuration["EventBusPassword"]))
+                    {
+                        factory.Password = configuration["EventBusPassword"];
+                    }
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(configuration["EventBusRetryCount"]);
+                    }
+
+                    return new DefaultPersistentConnection(logger, factory, retryCount);
+                });
+
+
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+
+                    var persistentConnection = sp.GetRequiredService<IPersistentConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(configuration["EventBusRetryCount"]);
+                    }
+
+                    return new EventBusRabbitMQ(logger, persistentConnection, eventBusSubcriptionsManager, iLifetimeScope, subscriptionClientName, retryCount);
+                });
+            }
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
+            // handlers
+            //services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+            //services.AddTransient<OrderStartedIntegrationEventHandler>();
+        }
     }
 }
