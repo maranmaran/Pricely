@@ -152,35 +152,9 @@ namespace ItemService.API
         /// </summary>
         public static void ConfigureEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            var subscriptionClientName = configuration["SubscriptionClientName"];
+            var subscriptionClientName = configuration.GetValue<string>("EventBus:SubscriptionClientName");
 
-            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            {
-
-                throw new NotImplementedException("Azure service bus not implemented");
-
-                //services.AddSingleton<IServiceBusPersisterConnection>(sp =>
-                //{
-                //    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
-
-                //    var serviceBusConnectionString = configuration["EventBusConnection"];
-                //    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
-
-                //    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
-                //});
-
-                //services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
-                //{
-                //    var serviceBusPersisterConnection = sp.GetRequiredService<IPersistentConnection>();
-                //    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                //    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                //    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                //    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                //        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
-                //});
-            }
-            else
+            if (configuration.GetValue<bool>("EventBus:AzureServiceBusEnabled") == false) // azure not implemented
             {
                 services.AddSingleton<IPersistentConnection>(sp =>
                 {
@@ -188,25 +162,19 @@ namespace ItemService.API
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = configuration["EventBusConnection"],
-                        DispatchConsumersAsync = true
+                        HostName = configuration.GetValue<string>("EventBus:Host"),
+                        Port = configuration.GetValue<int>("EventBus:Port"),
+                        UserName = configuration.GetValue<string>("EventBus:Username"),
+                        Password = configuration.GetValue<string>("EventBus:Password"),
+                        DispatchConsumersAsync = true,
+                        //Ssl = new SslOption()
+                        //{
+                        //    ServerName = configuration.GetValue<string>("EventBus:Host"),
+                        //    Enabled = true
+                        //}
                     };
 
-                    if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))
-                    {
-                        factory.UserName = configuration["EventBusUserName"];
-                    }
-
-                    if (!string.IsNullOrEmpty(configuration["EventBusPassword"]))
-                    {
-                        factory.Password = configuration["EventBusPassword"];
-                    }
-
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
-                    {
-                        retryCount = int.Parse(configuration["EventBusRetryCount"]);
-                    }
+                    var retryCount = configuration.GetValue<int>("EventBus:RetryCount");
 
                     return new DefaultPersistentConnection(logger, factory, retryCount);
                 });
@@ -220,11 +188,7 @@ namespace ItemService.API
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
-                    {
-                        retryCount = int.Parse(configuration["EventBusRetryCount"]);
-                    }
+                    var retryCount = configuration.GetValue<int>("EventBus:RetryCount");
 
                     return new EventBusRabbitMQ(logger, persistentConnection, eventBusSubcriptionsManager, iLifetimeScope, subscriptionClientName, retryCount);
                 });
