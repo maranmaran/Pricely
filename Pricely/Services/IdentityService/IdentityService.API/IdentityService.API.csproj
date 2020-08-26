@@ -8,7 +8,7 @@
     see https://github.com/Azure/service-fabric-issues/issues/190
     -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>bin\$(Configuration)\API.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\IdentityService.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -45,10 +45,10 @@ namespace IdentityService.API.Middleware
                 Message = exception.Message,
             };
 
-            if (exception is FetchException fetchEx)
+            if (exception is NotFoundException notFoundEx)
             {
                 errorDetails.Status = HttpStatusCode.NotFound;
-                errorDetails.Message = fetchEx.Message;
+                errorDetails.Message = notFoundEx.Message;
             }
 
             if (exception is ValidationException validationEx)

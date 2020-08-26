@@ -39,6 +39,7 @@ namespace IdentityService.API
             services.ConfigureMediatR();
             services.ConfigureSwagger();
             services.ConfigureLazyCache();
+            services.ConfigureAutomapper();
             NLogBuilder.ConfigureNLog("nlog.config");
 
             //internal libs
@@ -46,6 +47,7 @@ namespace IdentityService.API
             // system configuration
             services.ConfigureResponseCompression(); // response compression
             services.ConfigureCors(Configuration); // Cors
+            services.ConfigureHealthCheck();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +60,7 @@ namespace IdentityService.API
             app.UseSwagger();
             app.UseSwaggerUI(setup =>
             {
-                setup.SwaggerEndpoint("/swagger/v1/swagger.json", "Products API");
+                setup.SwaggerEndpoint("/swagger/v1/swagger.json", "Items API");
                 setup.RoutePrefix = "api";
                 setup.DocExpansion(DocExpansion.None);
             });
@@ -80,6 +82,7 @@ namespace IdentityService.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("hc");
                 endpoints.MapControllers();
             });
         }

@@ -1,4 +1,10 @@
-﻿using FluentValidation.AspNetCore;
+﻿using System;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using IdentityService.API.LibraryConfigurations.MediatR;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -9,11 +15,6 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Reflection;
 
 namespace IdentityService.API
 {
@@ -27,8 +28,7 @@ namespace IdentityService.API
         {
             var assemblies = new[]
             {
-                //Assembly.GetAssembly(typeof(GetProductsQuery)),
-                Assembly.GetExecutingAssembly()
+                Assembly.GetAssembly(typeof(Business.Mappings)),
             };
 
             services.AddMediatR(assemblies.ToArray());
@@ -45,7 +45,7 @@ namespace IdentityService.API
         {
             services.AddSwaggerGen(action =>
             {
-                action.SwaggerDoc("v1", new OpenApiInfo { Title = "Products API", Version = "1" });
+                action.SwaggerDoc("v1", new OpenApiInfo { Title = "Items API", Version = "1" });
 
 
                 // for swagger comments
@@ -66,8 +66,7 @@ namespace IdentityService.API
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(new[]
                 {
-                    //Assembly.GetAssembly(typeof(GetProductsQuery)),
-                    Assembly.GetExecutingAssembly()
+                    Assembly.GetAssembly(typeof(Business.Mappings)),
                 }))
                 .AddNewtonsoftJson(options =>
                 {
@@ -114,6 +113,31 @@ namespace IdentityService.API
         public static void ConfigureLazyCache(this IServiceCollection services)
         {
             services.AddLazyCache();
+        }
+
+        /// <summary>
+        /// Adds health checks
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureHealthCheck(this IServiceCollection services)
+        {
+            services.AddHealthChecks();
+        }
+
+        /// <summary>
+        /// Configures automapper on service level
+        /// </summary>
+        public static void ConfigureAutomapper(this IServiceCollection services)
+        {
+            services.AddSingleton<IMapper>(provider =>
+            {
+                var config = new MapperConfiguration(c =>
+                {
+                    c.AddProfile<Business.Mappings>();
+                });
+
+                return config.CreateMapper();
+            });
         }
 
     }
