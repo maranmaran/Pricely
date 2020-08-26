@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+ 
+  rabbitmq:
+    image: rabbitmq:latest
+
+  items.api:
+    image: ${REGISTRY:-pricely}/items.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/ItemService/ItemService.API/Dockerfile    
+    depends_on:
+      - sql.data
+      - rabbitmq
