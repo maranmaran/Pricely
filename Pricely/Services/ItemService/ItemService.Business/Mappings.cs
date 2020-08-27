@@ -17,6 +17,10 @@ namespace ItemService.Business
             // maps same name properties
             CreateMap<Item, ItemDto>()
                 .ReverseMap()
+
+                // Ignore category virtual member.. if it has guid it will be mapped correctly in DB
+                .ForMember(x => x.Category, o => o.Ignore())
+
                 // special handling for ingredients because they have many2many join entity
                 .ForMember(d => d.Ingredients,
                     opt => opt.MapFrom(
@@ -27,12 +31,14 @@ namespace ItemService.Business
 
                                 ItemId = p.Id,
                                 IngredientId = a.Id,
-                                Ingredient = new Ingredient()
-                                {
-                                    Id = a.Id,
-                                    Description = a.Description,
-                                    Name = a.Name,
-                                }
+                                // Ignore because this will introduce issues and try to insert new item
+                                // ID on JOIN entity is enought
+                                //Ingredient = new Ingredient()
+                                //{
+                                //    Id = a.Id,
+                                //    Description = a.Description,
+                                //    Name = a.Name,
+                                //}
                             })
                     )
                 )
@@ -46,12 +52,12 @@ namespace ItemService.Business
 
                             ItemId = p.Id,
                             AllergenId = a.Id,
-                            Allergen = new Allergen()
-                            {
-                                Id = a.Id,
-                                Description = a.Description,
-                                Name = a.Name,
-                            }
+                            //Allergen = new Allergen()
+                            //{
+                            //    Id = a.Id,
+                            //    Description = a.Description,
+                            //    Name = a.Name,
+                            //}
                         })
                 )
             );

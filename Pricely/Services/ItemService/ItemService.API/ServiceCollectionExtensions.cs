@@ -22,7 +22,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using ItemService.Business.Queries.Items.GetItems;
 
 namespace ItemService.API
 {
@@ -69,7 +68,7 @@ namespace ItemService.API
         /// Configures MVC, JSON options and fluent validators
         /// </summary>
         /// <param name="services"></param>
-        public static void ConfigureMvcWithFluentValidation(this IServiceCollection services)
+        public static void ConfigureMvcJsonFluentValidation(this IServiceCollection services)
         {
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(new[]
@@ -78,6 +77,7 @@ namespace ItemService.API
                 }))
                 .AddNewtonsoftJson(options =>
                 {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -175,6 +175,7 @@ namespace ItemService.API
                     return new DefaultPersistentConnection(logger, factory, retryCount);
                 });
 
+                services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
                 services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
                 {
@@ -190,10 +191,7 @@ namespace ItemService.API
                 });
             }
 
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-
             // handlers
-            services.AddTransient<HelloEventHandler>();
             //services.AddTransient<OrderStartedIntegrationEventHandler>();
         }
     }

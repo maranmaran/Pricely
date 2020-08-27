@@ -22,6 +22,7 @@ namespace ItemService.Persistence
                 o.UseSqlServer(configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]);
                 o.EnableSensitiveDataLogging();
                 o.EnableDetailedErrors();
+                o.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             // Configure context for DI

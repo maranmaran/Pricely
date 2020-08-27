@@ -17,10 +17,4 @@
     <ProjectReference Include="..\ItemService.Persistence\ItemService.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\Items\DeleteItem\" />
-    <Folder Include="Commands\Items\UpdateItem\" />
-    <Folder Include="Queries\Items\GetItem\" />
-  </ItemGroup>
-
 </Project>

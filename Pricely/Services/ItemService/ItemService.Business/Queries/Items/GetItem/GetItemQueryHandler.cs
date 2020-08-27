@@ -1,29 +1,29 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
 using ItemService.Persistence.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace ItemService.Business.Queries.Items.GetItems
+namespace ItemService.Business.Queries.Items.GetItem
 {
-    public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, IEnumerable<ItemDto>>
+    public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto>
     {
         private readonly IRepository<Item> _repository;
         private readonly IMapper _mapper;
 
-        public GetItemsQueryHandler(IRepository<Item> repository, IMapper mapper)
+        public GetItemQueryHandler(IRepository<Item> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+        public async Task<ItemDto> Handle(GetItemQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _repository.GetAll(
+            var entities = await _repository.Get(
+                filter: source => source.Id == request.Id,
                 include: source => source
                     .Include(x => x.Ingredients)
                     .ThenInclude(x => x.Ingredient)
@@ -33,9 +33,7 @@ namespace ItemService.Business.Queries.Items.GetItems
                 cancellationToken: cancellationToken
             );
 
-
-            return _mapper.Map<IEnumerable<ItemDto>>(entities);
+            return _mapper.Map<ItemDto>(entities);
         }
     }
-
 }
