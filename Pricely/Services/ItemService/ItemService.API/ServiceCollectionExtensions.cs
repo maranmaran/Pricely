@@ -22,6 +22,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using ItemService.Business.Queries.Items.GetItems;
 
 namespace ItemService.API
 {
@@ -167,11 +168,6 @@ namespace ItemService.API
                         UserName = configuration.GetValue<string>("EventBus:Username"),
                         Password = configuration.GetValue<string>("EventBus:Password"),
                         DispatchConsumersAsync = true,
-                        //Ssl = new SslOption()
-                        //{
-                        //    ServerName = configuration.GetValue<string>("EventBus:Host"),
-                        //    Enabled = true
-                        //}
                     };
 
                     var retryCount = configuration.GetValue<int>("EventBus:RetryCount");
@@ -197,7 +193,7 @@ namespace ItemService.API
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
             // handlers
-            //services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+            services.AddTransient<HelloEventHandler>();
             //services.AddTransient<OrderStartedIntegrationEventHandler>();
         }
     }

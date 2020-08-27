@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using EventBus.Infrastructure.Interfaces;
 using EventBus.Infrastructure.Models;
 using ItemService.Domain.Entities;
@@ -39,9 +40,22 @@ namespace ItemService.Business.Queries.Items.GetItems
                 cancellationToken: cancellationToken
             );
 
-            _eventBus.Publish(new Event()); // make new class and extend Event class
+            _eventBus.Publish(new HelloEvent()); // make new class and extend Event class
 
             return _mapper.Map<IEnumerable<ItemDto>>(entities);
+        }
+    }
+
+    public class HelloEvent : Event
+    {
+        public string Title { get; set; } = "Hello world";
+    }
+
+    public class HelloEventHandler : IEventHandler<HelloEvent>
+    {
+        public Task Handle(HelloEvent @event)
+        {
+            throw new Exception($"{@event.Title}");
         }
     }
 

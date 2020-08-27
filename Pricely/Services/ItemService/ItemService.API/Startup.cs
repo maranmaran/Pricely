@@ -1,5 +1,7 @@
+using EventBus.Infrastructure.Interfaces;
 using ItemService.API.Middleware;
 using ItemService.Business;
+using ItemService.Business.Queries.Items.GetItems;
 using ItemService.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -89,8 +91,8 @@ namespace ItemService.API
 
 
             // DEMO: subscribe handlers
-            //var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            //eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<HelloEvent, HelloEventHandler>();
         }
     }
 }
