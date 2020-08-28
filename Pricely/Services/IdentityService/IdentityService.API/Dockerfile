@@ -29,18 +29,18 @@ COPY Services/IdentityService/IdentityService.Domain/
 RUN dotnet restore Pricely.sln
 
 COPY . .
-WORKDIR /Services/ItemService/ItemService.API
+WORKDIR /Services/IdentityService/IdentityService.API
 RUN dotnet publish --no-restore -c Release -o /app
 
 #FROM build as unittest
-#WORKDIR /Services/ItemService/ItemService.UnitTests
+#WORKDIR /Services/IdentityService/IdentityService.UnitTests
 
 #FROM build as functionaltest
-#WORKDIR /Services/ItemService/ItemService.FunctionalTests
+#WORKDIR /Services/IdentityService/IdentityService.FunctionalTests
 
 FROM build AS publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "ItemService.API.dll"]
+ENTRYPOINT ["dotnet", "IdentityService.API.dll"]
