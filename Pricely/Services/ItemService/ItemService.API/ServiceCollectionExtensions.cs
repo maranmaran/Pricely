@@ -71,10 +71,17 @@ namespace ItemService.API
         public static void ConfigureMvcJsonFluentValidation(this IServiceCollection services)
         {
             services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(new[]
+                .AddFluentValidation(fv =>
                 {
-                    Assembly.GetAssembly(typeof(Business.Mappings)),
-                }))
+                    fv.RegisterValidatorsFromAssemblies(new[]
+                    {
+                        Assembly.GetAssembly(typeof(Business.Mappings)),
+                    });
+
+                    // so that incoming properties are not validated
+                    // this is done through mediator pipeline behavior
+                    fv.AutomaticValidationEnabled = false;
+                })
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

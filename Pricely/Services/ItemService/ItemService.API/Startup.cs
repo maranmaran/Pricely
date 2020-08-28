@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NLog.Web;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -56,7 +55,6 @@ namespace ItemService.API
         {
             app.UseCors("AllowedCorsOrigins");
 
-
             // ===== Middleware to serve generated Swagger as a JSON endpoint and serve swagger-ui =====
             app.UseSwagger();
             app.UseSwaggerUI(setup =>
@@ -65,12 +63,6 @@ namespace ItemService.API
                 setup.RoutePrefix = "api";
                 setup.DocExpansion(DocExpansion.None);
             });
-
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
             app.UseHttpsRedirection();
 

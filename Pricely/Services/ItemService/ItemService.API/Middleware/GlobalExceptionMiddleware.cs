@@ -3,7 +3,6 @@ using FluentValidation;
 using ItemService.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -55,7 +54,7 @@ namespace ItemService.API.Middleware
             {
                 errorDetails.Status = HttpStatusCode.BadRequest;
                 errorDetails.Message = validationEx.Message;
-                errorDetails.Errors = JsonConvert.SerializeObject(validationEx.Errors);
+                errorDetails.Errors = validationEx.Errors;
             }
 
             await context.Response.WriteAsync(errorDetails.ToString());
