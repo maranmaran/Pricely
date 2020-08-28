@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation.AspNetCore;
 using IdentityService.API.LibraryConfigurations.MediatR;
 using MediatR;
@@ -15,6 +10,11 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
 
 namespace IdentityService.API
 {
@@ -139,6 +139,7 @@ namespace IdentityService.API
                 return config.CreateMapper();
             });
         }
+
 
     }
 }

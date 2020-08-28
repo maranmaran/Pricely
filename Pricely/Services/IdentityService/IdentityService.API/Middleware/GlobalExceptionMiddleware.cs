@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Common.Exceptions;
+﻿using Common.Exceptions;
 using FluentValidation;
 using IdentityService.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace IdentityService.API.Middleware
 {
@@ -56,6 +56,12 @@ namespace IdentityService.API.Middleware
                 errorDetails.Status = HttpStatusCode.BadRequest;
                 errorDetails.Message = validationEx.Message;
                 errorDetails.Errors = JsonConvert.SerializeObject(validationEx.Errors);
+            }
+
+            if (exception is UnauthorizedAccessException unauthorizedEx)
+            {
+                errorDetails.Status = HttpStatusCode.Unauthorized;
+                errorDetails.Message = unauthorizedEx.Message;
             }
 
             await context.Response.WriteAsync(errorDetails.ToString());

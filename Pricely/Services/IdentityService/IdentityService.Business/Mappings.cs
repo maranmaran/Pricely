@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using IdentityService.Domain.Entities;
 using IdentityService.Persistence.DTOModels;
 
@@ -9,69 +8,7 @@ namespace IdentityService.Business
     {
         public Mappings()
         {
-            CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<Allergen, AllergenDto>().ReverseMap();
-            CreateMap<Ingredient, IngredientDto>().ReverseMap();
-
-            // map between item entities
-            // maps same name properties
-            CreateMap<Item, ItemDto>()
-                .ReverseMap()
-                // special handling for ingredients because they have many2many join entity
-                .ForMember(d => d.Ingredients,
-                    opt => opt.MapFrom(
-                        // for each item ingredientDTO map to ItemIngredient join entity
-                        p => p.Ingredients
-                            .Select(a => new ItemIngredient
-                            {
-
-                                ItemId = p.Id,
-                                IngredientId = a.Id,
-                                Ingredient = new Ingredient()
-                                {
-                                    Id = a.Id,
-                                    Description = a.Description,
-                                    Name = a.Name,
-                                }
-                            })
-                    )
-                )
-                // special handling for allergens because they have many2many join entity
-                .ForMember(d => d.Allergens,
-                opt => opt.MapFrom(
-                    // for each item allergensDTO map to ItemAllergens join entity
-                    p => p.Allergens
-                        .Select(a => new ItemAllergen()
-                        {
-
-                            ItemId = p.Id,
-                            AllergenId = a.Id,
-                            Allergen = new Allergen()
-                            {
-                                Id = a.Id,
-                                Description = a.Description,
-                                Name = a.Name,
-                            }
-                        })
-                )
-            );
-
-            // Turn item ingredients join entity into ingredientDTO
-            // map join entity between item and it's ingredients to ingredientDTO
-            // to flatten it
-            CreateMap<ItemIngredient, IngredientDto>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.IngredientId))
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Ingredient.Name))
-                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Ingredient.Description));
-
-
-            // Turn item allergens join entity into allergenDTO
-            // map join entity between item and it's allergens to allergenDTO
-            // to flatten it
-            CreateMap<ItemAllergen, AllergenDto>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.AllergenId))
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Allergen.Name))
-                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Allergen.Description));
+            CreateMap<Company, CompanyDto>().ReverseMap();
         }
     }
 }

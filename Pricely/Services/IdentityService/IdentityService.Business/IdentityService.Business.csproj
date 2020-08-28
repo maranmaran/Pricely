@@ -13,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Library.EventBus\EventBus.RabbitMQ\EventBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\IdentityService.Persistence\IdentityService.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Authentication\" />
+    <Folder Include="Commands\Company\" />
+    <Folder Include="Queries\Authentication\" />
+    <Folder Include="Queries\Company\" />
   </ItemGroup>
 
 </Project>

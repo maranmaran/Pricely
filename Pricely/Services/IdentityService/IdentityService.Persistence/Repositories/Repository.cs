@@ -1,14 +1,14 @@
-﻿using System;
+﻿using IdentityService.Domain;
+using IdentityService.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityService.Domain;
 using IdentityService.Domain.Entities;
-using IdentityService.Persistence.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace IdentityService.Persistence.Repositories
 {

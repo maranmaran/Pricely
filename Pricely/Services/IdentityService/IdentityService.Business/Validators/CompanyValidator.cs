@@ -3,9 +3,9 @@ using IdentityService.Persistence.DTOModels;
 
 namespace IdentityService.Business.Validators
 {
-    public class ItemValidator : AbstractValidator<ItemDto>
+    public class CompanyValidator : AbstractValidator<CompanyDto>
     {
-        public ItemValidator()
+        public CompanyValidator()
         {
             RuleFor(x => x.Name)
                 .NotNull()

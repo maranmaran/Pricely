@@ -30,7 +30,7 @@ namespace ItemService.API
         public void ConfigureServices(IServiceCollection services)
         {
             // layers
-            services.RegisterBusinessServices();
+            services.ConfigureBusinessLayer(Configuration);
             services.ConfigurePersistenceLayer(Configuration);
 
             // external libraries

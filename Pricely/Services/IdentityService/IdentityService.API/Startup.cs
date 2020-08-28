@@ -31,7 +31,7 @@ namespace IdentityService.API
         public void ConfigureServices(IServiceCollection services)
         {
             // layers
-            services.RegisterBusinessServices();
+            services.ConfigureBusinessLayer(Configuration);
             services.ConfigurePersistenceLayer(Configuration);
 
             // external libraries
@@ -43,6 +43,8 @@ namespace IdentityService.API
             NLogBuilder.ConfigureNLog("nlog.config");
 
             //internal libs
+            services.ConfigureEventBus(Configuration);
+
 
             // system configuration
             services.ConfigureResponseCompression(); // response compression

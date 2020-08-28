@@ -1,21 +1,18 @@
-﻿using System;
-using System.IO;
-using IdentityService.Domain.Entities;
+﻿using IdentityService.Domain.Entities;
 using IdentityService.Domain.Seed;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 
 namespace IdentityService.Domain
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<Company, Role, Guid>
     {
-        public DbSet<Item> Items { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; }
-        public DbSet<Allergen> Allergens { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<ItemAllergen> ItemAllergens { get; set; }
-        public DbSet<ItemIngredient> ItemIngredients { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

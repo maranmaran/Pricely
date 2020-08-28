@@ -1,6 +1,8 @@
 ﻿using IdentityService.Domain;
+using IdentityService.Domain.Entities;
 using IdentityService.Persistence.Interfaces;
 using IdentityService.Persistence.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,27 @@ namespace IdentityService.Persistence
                 o.EnableSensitiveDataLogging();
                 o.EnableDetailedErrors();
             });
+
+            // Add identity
+            services.AddIdentityCore<Company>(o =>
+            {
+                o.Password = new PasswordOptions()
+                {
+                    RequireDigit = false,
+                    RequireLowercase = false,
+                    RequireNonAlphanumeric = false,
+                    RequireUppercase = false,
+                    RequiredLength = 2,
+                    RequiredUniqueChars = 0
+                };
+
+                o.SignIn = new SignInOptions()
+                {
+                    //RequireConfirmedEmail = 
+                };
+
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Configure context for DI
             services.AddTransient<ApplicationDbContext>();
