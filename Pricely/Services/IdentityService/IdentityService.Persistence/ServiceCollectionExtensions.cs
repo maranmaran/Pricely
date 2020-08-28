@@ -27,7 +27,7 @@ namespace IdentityService.Persistence
             });
 
             // Add identity
-            services.AddIdentityCore<Company>(o =>
+            services.AddIdentity<Company, Role>(o =>
             {
                 o.Password = new PasswordOptions()
                 {

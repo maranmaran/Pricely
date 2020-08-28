@@ -45,7 +45,6 @@ namespace IdentityService.API
             //internal libs
             services.ConfigureEventBus(Configuration);
 
-
             // system configuration
             services.ConfigureResponseCompression(); // response compression
             services.ConfigureCors(Configuration); // Cors
