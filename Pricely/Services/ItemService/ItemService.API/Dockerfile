@@ -3,30 +3,30 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
-WORKDIR /src
+WORKDIR ./
 
 # Keep the project list and command dotnet restore identical in all Dockfiles to maximize image cache utilization
 COPY Pricely.sln .
 COPY docker-compose.dcproj .
 
-COPY Shared/Common/
+COPY Shared/Common/ Shared/Common/
 
-COPY Libraries/Library.Communication/
+#COPY Libraries/Library.Communication/
 
-COPY Libraries/EventBus/EventBus.Infrastructure/
-COPY Libraries/EventBus/EventBus.RabbitMQ/
+COPY Libraries/Library.EventBus/EventBus.Infrastructure/ Libraries/Library.EventBus/EventBus.Infrastructure/
+COPY Libraries/Library.EventBus/EventBus.RabbitMQ/ Libraries/Library.EventBus/EventBus.RabbitMQ/
 
-COPY Services/ItemService/ItemService.API/
-COPY Services/ItemService/ItemService.Business/
-COPY Services/ItemService/ItemService.Persistence/
-COPY Services/ItemService/ItemService.Domain/
+COPY Services/ItemService/ItemService.API/ Services/ItemService/ItemService.API/
+COPY Services/ItemService/ItemService.Business/ Services/ItemService/ItemService.Business/
+COPY Services/ItemService/ItemService.Persistence/ Services/ItemService/ItemService.Persistence/
+COPY Services/ItemService/ItemService.Domain/ Services/ItemService/ItemService.Domain/
+#
+#COPY Services/IdentityService/IdentityService.API/ Services/IdentityService/IdentityService.API/
+#COPY Services/IdentityService/IdentityService.Business/ Services/IdentityService/IdentityService.Business/
+#COPY Services/IdentityService/IdentityService.Persistence/ Services/IdentityService/IdentityService.Persistence/
+#COPY Services/IdentityService/IdentityService.Domain/ Services/IdentityService/IdentityService.Domain/
 
-COPY Services/IdentityService/IdentityService.API/
-COPY Services/IdentityService/IdentityService.Business/
-COPY Services/IdentityService/IdentityService.Persistence/
-COPY Services/IdentityService/IdentityService.Domain/
-
-RUN dotnet restore Pricely.sln
+RUN dotnet restore Services/ItemService/ItemService.API/ItemService.API.csproj 
 
 COPY . .
 WORKDIR /Services/ItemService/ItemService.API

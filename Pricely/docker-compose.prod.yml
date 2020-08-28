@@ -33,8 +33,23 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${PRICELY_AZURE_REDIS_BASKET_DB:-Server=sql.data;Database=pricely_itemsdb;User Id=sa;Password=Pass@word}
       - EventBusConnection=${PRICELY_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBusUserName=${
-      }
+      - EventBusUserName=${}
+      - EventBusPassword=${PRICELY_SERVICE_BUS_PASSWORD}      
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+
+    ports:
+      - "80"   # The API Gateway redirects and access through the internal port (80). 
+
+  items.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${PRICELY_AZURE_REDIS_BASKET_DB:-Server=sql.data;Database=pricely_itemsdb;User Id=sa;Password=Pass@word}
+      - EventBusConnection=${PRICELY_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${}
       - EventBusPassword=${PRICELY_SERVICE_BUS_PASSWORD}      
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}

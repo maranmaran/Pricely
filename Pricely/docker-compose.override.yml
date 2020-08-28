@@ -22,17 +22,31 @@ services:
 
   items.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=${PRICELY_AZURE_REDIS_BASKET_DB:-Server=sql.data;Database=pricely_itemsdb;User Id=sa;Password=Pass@word}
-      - EventBusConnection=${PRICELY_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBusUserName=${PRICELY_SERVICE_BUS_USERNAME}
-      - EventBusPassword=${PRICELY_SERVICE_BUS_PASSWORD}      
-      - AzureServiceBusEnabled=False
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - UseLoadTest=${USE_LOADTEST:-False}
+      - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
+      - DatabaseSettings__ConnectionString=${PRICELY_ITEMS_DB}
+      - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
+      - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
+      - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
+      - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
+      - EventBus__AzureServiceBusEnabled=False
+      - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}
+      - EventBus__SubscriptionClientName=ItemService
 
     ports:
       - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
+                    # The API Gateway redirects and access through the internal port (80). 
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
+      - DatabaseSettings__ConnectionString=${PRICELY_IDENTITY_DB}
+      - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
+      - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
+      - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
+      - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
+      - EventBus__AzureServiceBusEnabled=False
+      - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}      
+      - EventBus__SubscriptionClientName=IdentityService
+
+    ports:
+      - "5104:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80). 
