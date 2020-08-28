@@ -10,7 +10,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Ingredients.Update
 {
-    public class UpdateIngredientCommandHandler : IRequestHandler<UpdateIngredientCommand, Unit>
+    internal class UpdateIngredientCommandHandler : IRequestHandler<UpdateIngredientCommand, Unit>
     {
         private readonly IRepository<Ingredient> _repository;
         private readonly IMapper _mapper;

@@ -10,7 +10,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Categories.Update
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Unit>
+    internal class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Unit>
     {
         private readonly IRepository<Category> _repository;
         private readonly IMapper _mapper;

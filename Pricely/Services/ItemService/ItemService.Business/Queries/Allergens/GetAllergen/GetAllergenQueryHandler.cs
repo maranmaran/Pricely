@@ -8,7 +8,7 @@ using MediatR;
 
 namespace ItemService.Business.Queries.Allergens.GetAllergen
 {
-    public class GetAllergenQueryHandler : IRequestHandler<GetAllergenQuery, AllergenDto>
+    internal class GetAllergenQueryHandler : IRequestHandler<GetAllergenQuery, AllergenDto>
     {
         private readonly IRepository<Allergen> _repository;
         private readonly IMapper _mapper;

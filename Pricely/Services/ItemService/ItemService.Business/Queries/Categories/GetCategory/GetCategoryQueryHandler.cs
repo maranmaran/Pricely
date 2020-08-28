@@ -8,7 +8,7 @@ using MediatR;
 
 namespace ItemService.Business.Queries.Categories.GetCategory
 {
-    public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, CategoryDto>
+    internal class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, CategoryDto>
     {
         private readonly IRepository<Category> _repository;
         private readonly IMapper _mapper;

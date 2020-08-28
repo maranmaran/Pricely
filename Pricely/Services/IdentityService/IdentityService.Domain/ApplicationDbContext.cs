@@ -54,7 +54,7 @@ namespace IdentityService.Domain
 
             // Build config
             var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../ItemService.API"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../IdentityService.API"))
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
                 .Build();

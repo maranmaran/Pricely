@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Items.Delete
 {
-    public class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, Unit>
+    internal class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, Unit>
     {
         private readonly IRepository<Item> _repository;
         private readonly IEventBus _eventBus;

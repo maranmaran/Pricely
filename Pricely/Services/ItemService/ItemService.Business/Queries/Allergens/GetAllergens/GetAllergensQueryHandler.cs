@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Queries.Allergens.GetAllergens
 {
-    public class GetAllergensQueryHandler : IRequestHandler<GetAllergensQuery, IEnumerable<AllergenDto>>
+    internal class GetAllergensQueryHandler : IRequestHandler<GetAllergensQuery, IEnumerable<AllergenDto>>
     {
         private readonly IRepository<Allergen> _repository;
         private readonly IMapper _mapper;

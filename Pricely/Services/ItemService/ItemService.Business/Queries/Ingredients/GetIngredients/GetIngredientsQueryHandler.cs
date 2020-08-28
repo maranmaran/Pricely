@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Queries.Ingredients.GetIngredients
 {
-    public class GetIngredientsQueryHandler : IRequestHandler<GetIngredientsQuery, IEnumerable<IngredientDto>>
+    internal class GetIngredientsQueryHandler : IRequestHandler<GetIngredientsQuery, IEnumerable<IngredientDto>>
     {
         private readonly IRepository<Ingredient> _repository;
         private readonly IMapper _mapper;

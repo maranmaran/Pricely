@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItemService.Business.Queries.Items.GetItem
 {
-    public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto>
+    internal class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto>
     {
         private readonly IRepository<Item> _repository;
         private readonly IMapper _mapper;

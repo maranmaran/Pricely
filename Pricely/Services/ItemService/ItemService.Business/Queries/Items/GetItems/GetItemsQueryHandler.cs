@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ItemService.Business.Queries.Items.GetItems
 {
-    public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, IEnumerable<ItemDto>>
+    internal class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, IEnumerable<ItemDto>>
     {
         private readonly IRepository<Item> _repository;
         private readonly IMapper _mapper;

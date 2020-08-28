@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Categories.Delete
 {
-    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Unit>
+    internal class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Unit>
     {
         private readonly IRepository<Category> _repository;
         private readonly IEventBus _eventBus;

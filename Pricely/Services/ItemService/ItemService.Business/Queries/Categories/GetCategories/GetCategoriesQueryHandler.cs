@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Queries.Categories.GetCategories
 {
-    public class GetCategorysQueryHandler : IRequestHandler<GetCategorysQuery, IEnumerable<CategoryDto>>
+    internal class GetCategorysQueryHandler : IRequestHandler<GetCategorysQuery, IEnumerable<CategoryDto>>
     {
         private readonly IRepository<Category> _repository;
         private readonly IMapper _mapper;

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Categories.Create
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Guid>
+    internal class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Guid>
     {
         private readonly IRepository<Category> _repository;
         private readonly IMapper _mapper;

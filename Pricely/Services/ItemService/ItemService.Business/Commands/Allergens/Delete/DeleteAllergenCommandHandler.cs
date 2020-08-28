@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Allergens.Delete
 {
-    public class DeleteAllergenCommandHandler : IRequestHandler<DeleteAllergenCommand, Unit>
+    internal class DeleteAllergenCommandHandler : IRequestHandler<DeleteAllergenCommand, Unit>
     {
         private readonly IRepository<Allergen> _repository;
         private readonly IEventBus _eventBus;

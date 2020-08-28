@@ -28,7 +28,7 @@ namespace IdentityService.Domain.Seed
                 },
                 new Company()
                 {
-                    Id = new Guid("4638a704-604e-4ebf-8da4-2271be9a953d"),
+                    Id = new Guid("4638a704-604e-4ebf-8da4-2271be9a953e"),
                     Name = "Ookla bar",
                     Email = "ookla@app.com",
                     LogoUrl = "https://unsplash.com/photos/CoNsEK5iHug"
@@ -36,7 +36,7 @@ namespace IdentityService.Domain.Seed
 
                 new Company()
                 {
-                    Id = new Guid("4638a704-604e-4ebf-8da4-2271be9a953d"),
+                    Id = new Guid("4638a704-604e-4ebf-8da4-2271be9a953f"),
                     Name = "Fosta dosta bar",
                     Email = "fosta.dosta@app.com",
                     LogoUrl = "https://unsplash.com/photos/rXXT20z60f8"
@@ -50,17 +50,16 @@ namespace IdentityService.Domain.Seed
 
             builder.Entity<Company>().HasData(companies);
 
+            //var addresses = new List<object>()
+            //{
+            //    new
+            //    {
+            //        CompanyId = new Guid(""),
+            //    },
 
-            var addresses = new List<object>()
-            {
-                new
-                {
-                    CompanyId = new Guid(""),
-                },
+            //};
 
-            };
-
-            builder.Entity<Company>().OwnsOne(x => x.Address).HasData(addresses);
+            //builder.Entity<Company>().OwnsOne(x => x.Address).HasData(addresses);
         }
 
     }

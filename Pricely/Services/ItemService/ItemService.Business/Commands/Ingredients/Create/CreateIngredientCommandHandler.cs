@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Ingredients.Create
 {
-    public class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, Guid>
+    internal class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, Guid>
     {
         private readonly IRepository<Ingredient> _repository;
         private readonly IMapper _mapper;

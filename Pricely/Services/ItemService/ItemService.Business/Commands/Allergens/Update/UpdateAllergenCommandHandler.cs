@@ -10,7 +10,7 @@ using MediatR;
 
 namespace ItemService.Business.Commands.Allergens.Update
 {
-    public class UpdateAllergenCommandHandler : IRequestHandler<UpdateAllergenCommand, Unit>
+    internal class UpdateAllergenCommandHandler : IRequestHandler<UpdateAllergenCommand, Unit>
     {
         private readonly IRepository<Allergen> _repository;
         private readonly IMapper _mapper;

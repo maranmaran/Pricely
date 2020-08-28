@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ItemService.Business.Commands.Allergens.Create
 {
-    public class CreateAllergenCommandHandler : IRequestHandler<CreateAllergenCommand, Guid>
+    internal class CreateAllergenCommandHandler : IRequestHandler<CreateAllergenCommand, Guid>
     {
         private readonly IRepository<Allergen> _repository;
         private readonly IMapper _mapper;
