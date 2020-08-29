@@ -2,8 +2,9 @@
 
 Application for online menu and inventory management.
 
-Currently in development
-Plans for services:
+Currently in development (Specifications and Diagrams coming soon)
+
+#### Plans for services:
 * Basket bounded context
 * Identity bounded context
 * Items bounded context
@@ -11,7 +12,7 @@ Plans for services:
 * Orders bounded context
 * Tables bounded context
 
-### Technologies and concepts:
+#### Technologies and concepts:
 * Microservice architecture
 * Docker containers
 * Event bus: RabbitMq | Azure | Kafka
