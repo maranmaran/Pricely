@@ -7,6 +7,7 @@ services:
  
   rabbitmq:
     image: rabbitmq:management-alpine
+    hostname: ${PRICELY_EVENT_BUS_HOST}
 
   items.api:
     image: ${REGISTRY:-pricely}/items.api:${PLATFORM:-linux}-${TAG:-latest}
