@@ -1,5 +1,4 @@
-﻿using DnsClient.Internal;
-using MenuService.Domain.Entities;
+﻿using MenuService.Domain.Entities;
 using MenuService.Persistence;
 using MongoDB.Driver;
 using System;
@@ -12,11 +11,11 @@ namespace MenuService.Domain.Seed
     {
         private static ApplicationDbContext _context;
 
-        public static async Task SeedAsync(DatabaseSettings settings, ILoggerFactory loggerFactory)
+        public static async Task SeedAsync(DatabaseSettings settings)
         {
             _context = new ApplicationDbContext(settings);
 
-            if (!_context.Menu.Database.GetCollection<Menu>(nameof(Menu)).AsQueryable().Any())
+            if (!await _context.Menu.Database.GetCollection<Menu>(nameof(Menu)).AsQueryable().AnyAsync())
             {
                 await SeedMenus();
             }

@@ -1,4 +1,5 @@
 using Autofac.Extensions.DependencyInjection;
+using MenuService.Domain.Seed;
 using MenuService.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,7 @@ namespace MenuService.API
                 {
                     // ==================== MIGRATIONS ==================
                     // comment if you don't want seed values in migrations
-                    //MigrateDb(services, logger);
+                    MigrateDb(services, logger);
 
                     logger.LogInformation($"Running {Assembly.GetExecutingAssembly().FullName}");
                     host.Run();
@@ -63,8 +64,9 @@ namespace MenuService.API
         private static void MigrateDb(IServiceProvider services, ILogger<Program> logger)
         {
             logger.LogInformation("Migrating DB");
-            var context = services.GetService<ApplicationDbContext>();
-            //context.Database.Migrate();
+
+            DbSeeder.SeedAsync(services.GetService<DatabaseSettings>()).Wait();
+
             logger.LogInformation("Finished migrating DB");
         }
     }
