@@ -1,5 +1,7 @@
+using EventBus.Infrastructure.Interfaces;
 using MenuService.API.Middleware;
 using MenuService.Business;
+using MenuService.Business.EventHandlers;
 using MenuService.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,9 +82,10 @@ namespace MenuService.API
             });
 
 
-            // DEMO: subscribe handlers
-            //var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            //eventBus.Subscribe<HelloEvent, HelloEventHandler>();
+            // subscribe handlers
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<ItemDeletedEvent, ItemDeletedEventHandler>();
+            eventBus.Subscribe<ItemUpdatedEvent, ItemUpdatedEventHandler>();
         }
     }
 }

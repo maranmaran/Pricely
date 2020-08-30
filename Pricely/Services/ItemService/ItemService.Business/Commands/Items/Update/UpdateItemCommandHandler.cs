@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Common.Exceptions;
 using EventBus.Infrastructure.Interfaces;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.Interfaces;
 using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Commands.Items.Update
 {
@@ -31,7 +31,7 @@ namespace ItemService.Business.Commands.Items.Update
 
                 await _repository.Update(entity, cancellationToken);
 
-                _eventBus.Publish(new ItemUpdatedEvent(entity));
+                _eventBus.Publish(new ItemUpdatedEvent(request.Item));
 
                 return Unit.Value;
             }

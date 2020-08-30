@@ -31,7 +31,7 @@ namespace ItemService.Business.Commands.Ingredients.Update
 
                 await _repository.Update(entity, cancellationToken);
 
-                _eventBus.Publish(new IngredientUpdatedEvent(entity));
+                _eventBus.Publish(new IngredientUpdatedEvent(request.Ingredient));
 
                 return Unit.Value;
             }

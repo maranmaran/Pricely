@@ -1,15 +1,16 @@
 ﻿using EventBus.Infrastructure.Models;
 using ItemService.Domain.Entities;
+using ItemService.Persistence.DTOModels;
 
 namespace ItemService.Business.Commands.Ingredients.Update
 {
     public class IngredientUpdatedEvent : Event
     {
-        public IngredientUpdatedEvent(Ingredient ingredient)
+        public IngredientUpdatedEvent(IngredientDto ingredient)
         {
             Ingredient = ingredient;
         }
 
-        public Ingredient Ingredient { get; set; }
+        public IngredientDto Ingredient { get; set; }
     }
 }

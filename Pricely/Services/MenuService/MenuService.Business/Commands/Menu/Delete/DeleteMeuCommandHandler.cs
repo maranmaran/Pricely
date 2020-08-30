@@ -1,5 +1,4 @@
 ﻿using Common.Exceptions;
-using EventBus.Infrastructure.Interfaces;
 using MediatR;
 using MenuService.Persistence.Interfaces;
 using System;
@@ -11,12 +10,10 @@ namespace MenuService.Business.Commands.Menu.Delete
     internal class DeleteMenuCommandHandler : IRequestHandler<DeleteMenuCommand, Unit>
     {
         private readonly IMongoRepository<Domain.Entities.Menu> _repository;
-        private readonly IEventBus _eventBus;
 
-        public DeleteMenuCommandHandler(IMongoRepository<Domain.Entities.Menu> repository, IEventBus eventBus)
+        public DeleteMenuCommandHandler(IMongoRepository<Domain.Entities.Menu> repository)
         {
             _repository = repository;
-            _eventBus = eventBus;
         }
 
         public async Task<Unit> Handle(DeleteMenuCommand request, CancellationToken cancellationToken)

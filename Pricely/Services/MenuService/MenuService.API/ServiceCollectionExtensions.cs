@@ -5,8 +5,9 @@ using EventBus.Infrastructure.Interfaces;
 using EventBus.RabbitMQ;
 using EventBus.RabbitMQ.Interfaces;
 using FluentValidation.AspNetCore;
-using MenuService.API.LibraryConfigurations.MediatR;
 using MediatR;
+using MenuService.API.LibraryConfigurations.MediatR;
+using MenuService.Business.EventHandlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
@@ -199,7 +200,8 @@ namespace MenuService.API
             }
 
             // handlers
-            //services.AddTransient<OrderStartedIntegrationEventHandler>();
+            services.AddTransient<ItemUpdatedEventHandler>();
+            services.AddTransient<ItemDeletedEventHandler>();
         }
     }
 }
