@@ -1,7 +1,9 @@
+using DnsClient.Internal;
 using EventBus.Infrastructure.Interfaces;
 using MenuService.API.Middleware;
 using MenuService.Business;
 using MenuService.Business.EventHandlers;
+using MenuService.Domain.Seed;
 using MenuService.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -53,7 +55,7 @@ namespace MenuService.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory _loggerFactory)
         {
             app.UseCors("AllowedCorsOrigins");
 
@@ -81,11 +83,12 @@ namespace MenuService.API
                 endpoints.MapControllers();
             });
 
-
             // subscribe handlers
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<ItemDeletedEvent, ItemDeletedEventHandler>();
             eventBus.Subscribe<ItemUpdatedEvent, ItemUpdatedEventHandler>();
+
+            DbSeeder.SeedAsync(app.ApplicationServices.GetService<DatabaseSettings>(), _loggerFactory).Wait()
         }
     }
 }

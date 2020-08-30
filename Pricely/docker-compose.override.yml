@@ -15,6 +15,10 @@ services:
     ports:
       - "5433:1433"    # Important: In a production environment your should remove the external port
 
+  nosql.data:
+    ports:
+      - "27017:27017"  # Important: In a production environment your should remove the external port
+  
   rabbitmq:
     ports:
       - "15672:15672"  # Important: In a production environment your should remove the external port
@@ -50,4 +54,20 @@ services:
 
     ports:
       - "5104:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
+                    # The API Gateway redirects and access
+  menu.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
+      - DatabaseSettings__ConnectionString=${PRICELY_MENU_DB}
+      - DatabaseSettings__Database=menu-service
+      - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
+      - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
+      - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
+      - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
+      - EventBus__AzureServiceBusEnabled=False
+      - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}      
+      - EventBus__SubscriptionClientName=MenuService
+
+    ports:
+      - "5105:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80). 
