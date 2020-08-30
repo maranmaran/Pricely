@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Exceptions;
+﻿using Common.Exceptions;
 using EventBus.Infrastructure.Interfaces;
 using MediatR;
 using MenuService.Persistence.Interfaces;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MenuService.Business.Commands.Menu.Delete
 {
@@ -23,7 +23,7 @@ namespace MenuService.Business.Commands.Menu.Delete
         {
             try
             {
-                await _repository.DeleteByIdAsync(request.Id.ToString(), cancellationToken);
+                await _repository.DeleteByIdAsync(request.Id, cancellationToken);
 
                 return Unit.Value;
             }

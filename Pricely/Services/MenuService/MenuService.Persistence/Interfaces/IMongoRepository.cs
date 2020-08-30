@@ -20,19 +20,22 @@ namespace MenuService.Persistence.Interfaces
             Expression<Func<TDocument, TProjected>> projectionExpression);
 
         Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression, CancellationToken cancellationToken = default);
-
-        Task<TDocument> FindByIdAsync(string id, CancellationToken cancellationToken = default);
+        Task<TDocument> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<Guid> InsertOneAsync(TDocument document, CancellationToken cancellationToken = default);
-
         Task InsertManyAsync(ICollection<TDocument> documents, CancellationToken cancellationToken = default);
 
         Task ReplaceOneAsync(TDocument document, CancellationToken cancellationToken = default);
+        Task ReplaceManyAsync(ICollection<TDocument> documents, CancellationToken cancellationToken = default);
+
+        Task<Guid> UpsertOneAsync(TDocument document, CancellationToken cancellationToken = default);
+        Task UpsertManyAsync(ICollection<TDocument> documents, CancellationToken cancellationToken = default);
+
+        Task UpdateOneAsync(TDocument document, CancellationToken cancellationToken = default);
+        Task UpdateManyAsync(ICollection<TDocument> documents, CancellationToken cancellationToken = default);
 
         Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression, CancellationToken cancellationToken = default);
-
-        Task DeleteByIdAsync(string id, CancellationToken cancellationToken = default);
-
         Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression, CancellationToken cancellationToken = default);
+        Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

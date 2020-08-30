@@ -1,9 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using MenuService.Persistence.DTOModels;
 using MenuService.Persistence.Interfaces;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MenuService.Business.Queries.Menu.Get
 {
@@ -20,7 +20,7 @@ namespace MenuService.Business.Queries.Menu.Get
 
         public async Task<MenuDto> Handle(GetMenuQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _repository.FindByIdAsync(request.Id.ToString(), cancellationToken);
+            var entities = await _repository.FindByIdAsync(request.Id, cancellationToken);
 
             return _mapper.Map<MenuDto>(entities);
         }

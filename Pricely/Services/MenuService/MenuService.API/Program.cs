@@ -1,14 +1,12 @@
 using Autofac.Extensions.DependencyInjection;
-using MenuService.Domain;
+using MenuService.Persistence;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Reflection;
-using MenuService.Persistence;
 
 namespace MenuService.API
 {
@@ -66,7 +64,7 @@ namespace MenuService.API
         {
             logger.LogInformation("Migrating DB");
             var context = services.GetService<ApplicationDbContext>();
-            context.Database.Migrate();
+            //context.Database.Migrate();
             logger.LogInformation("Finished migrating DB");
         }
     }

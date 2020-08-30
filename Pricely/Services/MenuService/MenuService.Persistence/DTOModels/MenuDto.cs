@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MenuService.Persistence.DTOModels
 {
-    public class MenuDto : EntityDtoBase
+    public class MenuDto : DocumentDtoBase
     {
         public string Name { get; set; }
         public DateTime ValidFrom { get; set; }

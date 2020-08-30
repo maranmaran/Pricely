@@ -25,7 +25,7 @@ namespace MenuService.Business.Commands.Menu.Update
             {
                 var entity = _mapper.Map<Domain.Entities.Menu>(request.Menu);
 
-                await _repository.ReplaceOneAsync(entity, cancellationToken);
+                await _repository.UpdateOneAsync(entity, cancellationToken);
 
                 return Unit.Value;
             }

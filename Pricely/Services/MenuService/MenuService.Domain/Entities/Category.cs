@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MenuService.Domain.Entities
 {
-    public class Category : DocumentBase
+    public class Category : EntityBase
     {
         public string Name { get; set; }
         public string Description { get; set; }

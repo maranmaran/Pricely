@@ -2,7 +2,7 @@
 
 namespace MenuService.Domain.Entities
 {
-    public class Item : DocumentBase
+    public class Item : EntityBase
     {
         public string Name { get; set; }
         public bool Active { get; set; }
