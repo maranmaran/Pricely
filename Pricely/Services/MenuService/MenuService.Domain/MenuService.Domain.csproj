@@ -5,16 +5,44 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4"></PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4"></PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.4" />
+    <Compile Remove="Configurations\**" />
+    <Compile Remove="Enums\**" />
+    <EmbeddedResource Remove="Configurations\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <None Remove="Configurations\**" />
+    <None Remove="Enums\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\" />
-    <Folder Include="Enums\" />
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\build\../runtimes/win/native/snappy64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\build\../runtimes/win/native/snappy32.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\build\../runtimes/win/native/libzstd.dll" />
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\contentFiles\any\netstandard2.0\Core\Compression\Snappy\lib\win\snappy32.dll" />
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\contentFiles\any\netstandard2.0\Core\Compression\Snappy\lib\win\snappy64.dll" />
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\contentFiles\any\netstandard2.0\Core\Compression\Zstandard\lib\win\libzstd.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\build\../runtimes/win/native/libzstd.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\build\../runtimes/win/native/libzstd.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Marko Urh\.nuget\packages\mongodb.driver.core\2.11.1\build\../runtimes/win/native/libzstd.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.11.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.1" />
   </ItemGroup>
 
 </Project>

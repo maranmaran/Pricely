@@ -1,20 +1,19 @@
-﻿using Common.Exceptions;
-using EventBus.Infrastructure.Interfaces;
-using MediatR;
-using MenuService.Domain.Entities;
-using MenuService.Persistence.Interfaces;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Exceptions;
+using EventBus.Infrastructure.Interfaces;
+using MediatR;
+using MenuService.Persistence.Interfaces;
 
-namespace MenuService.Business.Commands.Menus.Delete
+namespace MenuService.Business.Commands.Menu.Delete
 {
     internal class DeleteMenuCommandHandler : IRequestHandler<DeleteMenuCommand, Unit>
     {
-        private readonly IRepository<Menu> _repository;
+        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
         private readonly IEventBus _eventBus;
 
-        public DeleteMenuCommandHandler(IRepository<Menu> repository, IEventBus eventBus)
+        public DeleteMenuCommandHandler(IMongoRepository<Domain.Entities.Menu> repository, IEventBus eventBus)
         {
             _repository = repository;
             _eventBus = eventBus;
@@ -24,7 +23,7 @@ namespace MenuService.Business.Commands.Menus.Delete
         {
             try
             {
-                await _repository.Delete(request.Id, cancellationToken);
+                await _repository.DeleteByIdAsync(request.Id.ToString(), cancellationToken);
 
                 return Unit.Value;
             }

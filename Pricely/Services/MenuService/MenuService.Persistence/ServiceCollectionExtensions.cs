@@ -1,7 +1,5 @@
-﻿using MenuService.Domain;
-using MenuService.Persistence.Interfaces;
+﻿using MenuService.Persistence.Interfaces;
 using MenuService.Persistence.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -17,19 +15,12 @@ namespace MenuService.Persistence
             services.AddSingleton(x => x.GetService<IOptions<DatabaseSettings>>().Value);
 
             // Add database
-            services.AddDbContext<ApplicationDbContext>(o =>
-            {
-                o.UseSqlServer(configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]);
-                o.EnableSensitiveDataLogging();
-                o.EnableDetailedErrors();
-                o.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            });
 
             // Configure context for DI
             services.AddTransient<ApplicationDbContext>();
 
             // add repositories to DI
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));
             //services.AddTransient<IPokemonRepository, PokemonRepository>();
         }
 

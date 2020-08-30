@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MenuService.Domain.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace MenuService.Domain.Entities
 {
-    public class Menu : EntityBase
+    [BsonCollection("menus")]
+    public class Menu : DocumentBase
     {
         public string Name { get; set; }
         public DateTime ValidFrom { get; set; }

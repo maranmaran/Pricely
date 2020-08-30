@@ -1,20 +1,19 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
-using MenuService.Domain.Entities;
-using MenuService.Persistence.Interfaces;
 using MediatR;
+using MenuService.Persistence.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MenuService.Business.Commands.Menus.Create
+namespace MenuService.Business.Commands.Menu.Create
 {
     internal class CreateMenuCommandHandler : IRequestHandler<CreateMenuCommand, Guid>
     {
-        private readonly IRepository<Menu> _repository;
+        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
         private readonly IMapper _mapper;
 
-        public CreateMenuCommandHandler(IRepository<Menu> repository, IMapper mapper)
+        public CreateMenuCommandHandler(IMongoRepository<Domain.Entities.Menu> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -24,9 +23,8 @@ namespace MenuService.Business.Commands.Menus.Create
         {
             try
             {
-                var entity = _mapper.Map<Menu>(request.Menu);
-                throw new Exception();
-                return await _repository.Insert(entity, cancellationToken);
+                var entity = _mapper.Map<Domain.Entities.Menu>(request.Menu);
+                return await _repository.InsertOneAsync(entity, cancellationToken);
             }
             catch (Exception e)
             {

@@ -2,6 +2,7 @@
 {
     public class DatabaseSettings
     {
-        public string ProductsEndpoint { get; set; }
+        public string ConnectionString { get; set; }
+        public string Database { get; set; }
     }
 }

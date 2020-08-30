@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Reflection;
+using MenuService.Persistence;
 
 namespace MenuService.API
 {

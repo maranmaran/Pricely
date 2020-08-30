@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace MenuService.Business.Commands.Menus.Delete
+namespace MenuService.Business.Commands.Menu.Delete
 {
     public class DeleteMenuCommand : IRequest<Unit>
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MenuService.Domain.Entities
 {
-    public class Category : EntityBase
+    public class Category : DocumentBase
     {
         public string Name { get; set; }
         public string Description { get; set; }

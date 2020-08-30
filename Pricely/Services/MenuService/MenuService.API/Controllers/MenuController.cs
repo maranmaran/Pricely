@@ -2,11 +2,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MenuService.Business.Commands.Menus.Create;
-using MenuService.Business.Commands.Menus.Delete;
-using MenuService.Business.Commands.Menus.Update;
-using MenuService.Business.Queries.Menus.GetMenu;
-using MenuService.Business.Queries.Menus.GetMenus;
+using MenuService.Business.Commands.Menu.Create;
+using MenuService.Business.Commands.Menu.Delete;
+using MenuService.Business.Commands.Menu.Update;
+using MenuService.Business.Queries.Menu.Get;
+using MenuService.Business.Queries.Menu.GetAll;
 using MenuService.Persistence.DTOModels;
 
 namespace MenuService.API.Controllers

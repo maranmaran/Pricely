@@ -1,7 +1,7 @@
-﻿using MenuService.Persistence.DTOModels;
-using MediatR;
+﻿using MediatR;
+using MenuService.Persistence.DTOModels;
 
-namespace MenuService.Business.Commands.Menus.Update
+namespace MenuService.Business.Commands.Menu.Update
 {
     public class UpdateMenuCommand : IRequest<Unit>
     {

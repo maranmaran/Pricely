@@ -1,8 +1,8 @@
 ﻿using System;
-using MenuService.Persistence.DTOModels;
 using MediatR;
+using MenuService.Persistence.DTOModels;
 
-namespace MenuService.Business.Queries.Menus.GetMenu
+namespace MenuService.Business.Queries.Menu.Get
 {
     public class GetMenuQuery : IRequest<MenuDto>
     {

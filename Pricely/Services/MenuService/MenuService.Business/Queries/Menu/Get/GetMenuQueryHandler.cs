@@ -1,19 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using MenuService.Domain.Entities;
+using MediatR;
 using MenuService.Persistence.DTOModels;
 using MenuService.Persistence.Interfaces;
-using MediatR;
 
-namespace MenuService.Business.Queries.Menus.GetMenu
+namespace MenuService.Business.Queries.Menu.Get
 {
     internal class GetMenuQueryHandler : IRequestHandler<GetMenuQuery, MenuDto>
     {
-        private readonly IRepository<Menu> _repository;
+        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
         private readonly IMapper _mapper;
 
-        public GetMenuQueryHandler(IRepository<Menu> repository, IMapper mapper)
+        public GetMenuQueryHandler(IMongoRepository<Domain.Entities.Menu> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -21,9 +20,7 @@ namespace MenuService.Business.Queries.Menus.GetMenu
 
         public async Task<MenuDto> Handle(GetMenuQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _repository.Get(
-                filter: source => source.Id == request.Id, cancellationToken: cancellationToken
-            );
+            var entities = await _repository.FindByIdAsync(request.Id.ToString(), cancellationToken);
 
             return _mapper.Map<MenuDto>(entities);
         }

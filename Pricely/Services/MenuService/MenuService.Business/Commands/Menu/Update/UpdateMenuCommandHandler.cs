@@ -1,35 +1,31 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
-using EventBus.Infrastructure.Interfaces;
 using MediatR;
-using MenuService.Domain.Entities;
 using MenuService.Persistence.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MenuService.Business.Commands.Menus.Update
+namespace MenuService.Business.Commands.Menu.Update
 {
     internal class UpdateMenuCommandHandler : IRequestHandler<UpdateMenuCommand, Unit>
     {
-        private readonly IRepository<Menu> _repository;
+        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
         private readonly IMapper _mapper;
-        private readonly IEventBus _eventBus;
 
-        public UpdateMenuCommandHandler(IRepository<Menu> repository, IMapper mapper, IEventBus eventBus)
+        public UpdateMenuCommandHandler(IMongoRepository<Domain.Entities.Menu> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _eventBus = eventBus;
         }
 
         public async Task<Unit> Handle(UpdateMenuCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var entity = _mapper.Map<Menu>(request.Menu);
+                var entity = _mapper.Map<Domain.Entities.Menu>(request.Menu);
 
-                await _repository.Update(entity, cancellationToken);
+                await _repository.ReplaceOneAsync(entity, cancellationToken);
 
                 return Unit.Value;
             }

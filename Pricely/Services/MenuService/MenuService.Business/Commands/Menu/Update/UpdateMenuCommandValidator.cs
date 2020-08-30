@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MenuService.Business.Validators;
 
-namespace MenuService.Business.Commands.Menus.Update
+namespace MenuService.Business.Commands.Menu.Update
 {
     public class UpdateMenuCommandValidator : AbstractValidator<UpdateMenuCommand>
     {

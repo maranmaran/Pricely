@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using MenuService.Persistence.DTOModels;
-using System;
 
-namespace MenuService.Business.Commands.Menus.Create
+namespace MenuService.Business.Commands.Menu.Create
 {
     public class CreateMenuCommand : IRequest<Guid>
     {
