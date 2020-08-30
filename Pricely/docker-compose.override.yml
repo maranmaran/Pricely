@@ -8,66 +8,86 @@ version: '3.4'
 
 services:
 
-  sql.data:
-    environment:
-      - SA_PASSWORD=Pass@word
-      - ACCEPT_EULA=Y
-    ports:
-      - "5433:1433"    # Important: In a production environment your should remove the external port
+    #DATA =======================================================================================================
+    sql.data:
+        environment:
+            - SA_PASSWORD=Pass@word
+            - ACCEPT_EULA=Y
+        ports:
+            - "5433:1433"    # Important: In a production environment your should remove the external port
 
-  nosql.data:
-    ports:
-      - "27017:27017"  # Important: In a production environment your should remove the external port
+    nosql.data:
+        ports:
+            - "27017:27017"  # Important: In a production environment your should remove the external port
   
-  rabbitmq:
-    ports:
-      - "15672:15672"  # Important: In a production environment your should remove the external port
-      - "5672:5672"    # Important: In a production environment your should remove the external port
-      - "5671:5671"    # Important: In a production environment your should remove the external port
+    #EVENT BUS =======================================================================================================
+    rabbitmq:
+        ports:
+            - "15672:15672"  # Important: In a production environment your should remove the external port
+            - "5672:5672"    # Important: In a production environment your should remove the external port
+            - "5671:5671"    # Important: In a production environment your should remove the external port
 
-  items.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
-      - DatabaseSettings__ConnectionString=${PRICELY_ITEMS_DB}
-      - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
-      - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
-      - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
-      - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
-      - EventBus__AzureServiceBusEnabled=False
-      - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}
-      - EventBus__SubscriptionClientName=ItemService
+    #LOGGING =======================================================================================================
+    graylog.elasticsearch:
+        command: "elasticsearch -Ecluster.name=graylog -Ediscovery.type=single-node"
 
-    ports:
-      - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80). 
-  identity.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
-      - DatabaseSettings__ConnectionString=${PRICELY_IDENTITY_DB}
-      - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
-      - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
-      - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
-      - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
-      - EventBus__AzureServiceBusEnabled=False
-      - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}      
-      - EventBus__SubscriptionClientName=IdentityService
+    graylog:
+        environment:
+            GRAYLOG_PASSWORD_SECRET: ${GRAYLOG_PASSWORD_SECRET}
+            GRAYLOG_ROOT_PASSWORD_SHA2: ${GRAYLOG_ROOT_PASSWORD_SHA2}
+            GRAYLOG_WEB_ENDPOINT_URI: ${GRAYLOG_WEB_ENDPOINT_URI}
+        links:
+            - graylog.elasticsearch:elasticsearch
+            - graylog.mongo:mongo
+        ports:
+            - "9000:9000"
+            - "12201:12201"
+            - "1514:1514"
 
-    ports:
-      - "5104:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access
-  menu.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
-      - DatabaseSettings__ConnectionString=${PRICELY_MENU_DB}
-      - DatabaseSettings__Database=menu-service
-      - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
-      - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
-      - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
-      - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
-      - EventBus__AzureServiceBusEnabled=False
-      - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}      
-      - EventBus__SubscriptionClientName=MenuService
+    #SERVICES =======================================================================================================
+    items.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
+            - DatabaseSettings__ConnectionString=${PRICELY_ITEMS_DB}
+            - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
+            - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
+            - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
+            - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
+            - EventBus__AzureServiceBusEnabled=False
+            - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}
+            - EventBus__SubscriptionClientName=ItemService
 
-    ports:
-      - "5105:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80). 
+        ports:
+            - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
+                        # The API Gateway redirects and access through the internal port (80). 
+    identity.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
+            - DatabaseSettings__ConnectionString=${PRICELY_IDENTITY_DB}
+            - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
+            - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
+            - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
+            - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
+            - EventBus__AzureServiceBusEnabled=False
+            - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}      
+            - EventBus__SubscriptionClientName=IdentityService
+
+        ports:
+            - "5104:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
+                        # The API Gateway redirects and access
+    menu.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
+            - DatabaseSettings__ConnectionString=${PRICELY_MENU_DB}
+            - DatabaseSettings__Database=menu-service
+            - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
+            - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
+            - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
+            - EventBus__Password=${PRICELY_EVENT_BUS_PASSWORD}      
+            - EventBus__AzureServiceBusEnabled=False
+            - EventBus__RetryCount=${PRICELY_EVENT_BUS_RETRY_COUNT}      
+            - EventBus__SubscriptionClientName=MenuService
+
+        ports:
+            - "5105:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
+                        # The API Gateway redirects and access through the internal port (80). 
