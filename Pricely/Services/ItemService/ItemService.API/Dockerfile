@@ -20,11 +20,6 @@ COPY Services/ItemService/ItemService.API/ Services/ItemService/ItemService.API/
 COPY Services/ItemService/ItemService.Business/ Services/ItemService/ItemService.Business/
 COPY Services/ItemService/ItemService.Persistence/ Services/ItemService/ItemService.Persistence/
 COPY Services/ItemService/ItemService.Domain/ Services/ItemService/ItemService.Domain/
-#
-#COPY Services/IdentityService/IdentityService.API/ Services/IdentityService/IdentityService.API/
-#COPY Services/IdentityService/IdentityService.Business/ Services/IdentityService/IdentityService.Business/
-#COPY Services/IdentityService/IdentityService.Persistence/ Services/IdentityService/IdentityService.Persistence/
-#COPY Services/IdentityService/IdentityService.Domain/ Services/IdentityService/IdentityService.Domain/
 
 RUN dotnet restore Services/ItemService/ItemService.API/ItemService.API.csproj 
 

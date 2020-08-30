@@ -20,11 +20,6 @@ COPY Services/MenuService/MenuService.API/ Services/MenuService/MenuService.API/
 COPY Services/MenuService/MenuService.Business/ Services/MenuService/MenuService.Business/
 COPY Services/MenuService/MenuService.Persistence/ Services/MenuService/MenuService.Persistence/
 COPY Services/MenuService/MenuService.Domain/ Services/MenuService/MenuService.Domain/
-#
-#COPY Services/IdentityService/IdentityService.API/ Services/IdentityService/IdentityService.API/
-#COPY Services/IdentityService/IdentityService.Business/ Services/IdentityService/IdentityService.Business/
-#COPY Services/IdentityService/IdentityService.Persistence/ Services/IdentityService/IdentityService.Persistence/
-#COPY Services/IdentityService/IdentityService.Domain/ Services/IdentityService/IdentityService.Domain/
 
 RUN dotnet restore Services/MenuService/MenuService.API/MenuService.API.csproj 
 

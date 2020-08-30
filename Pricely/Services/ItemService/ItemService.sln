@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemService.Domain", "ItemS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemService.Persistence", "ItemService.Persistence\ItemService.Persistence.csproj", "{B91752A3-AAFA-4DBE-A9CA-AA318F5A0861}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\..\Shared\Common\Common.csproj", "{AF6DF91E-7966-4E55-8D19-3123A5FA535E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{B91752A3-AAFA-4DBE-A9CA-AA318F5A0861}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B91752A3-AAFA-4DBE-A9CA-AA318F5A0861}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B91752A3-AAFA-4DBE-A9CA-AA318F5A0861}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF6DF91E-7966-4E55-8D19-3123A5FA535E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF6DF91E-7966-4E55-8D19-3123A5FA535E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF6DF91E-7966-4E55-8D19-3123A5FA535E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF6DF91E-7966-4E55-8D19-3123A5FA535E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
