@@ -6,9 +6,6 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR ./
 
 # Keep the project list and command dotnet restore identical in all Dockfiles to maximize image cache utilization
-COPY Pricely.sln .
-COPY docker-compose.dcproj .
-
 COPY Shared/Common/ Shared/Common/
 
 #COPY Libraries/Library.Communication/
