@@ -15,14 +15,13 @@ services:
         hostname: ${PRICELY_EVENT_BUS_HOST}
 
     #LOGGING =========================================================================================================
-    graylog.mongo:
-        image: mongo
+    seq:
+        image: datalust/seq:latest
+        hostname: seq
+        restart: unless-stopped
+        volumes:
+            - ./seq-data:/data
 
-    graylog.elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
-
-    graylog:
-        image: graylog/graylog:3.3.5-1
 
     #SERVICES =========================================================================================================
     items.api:

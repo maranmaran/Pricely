@@ -1,4 +1,3 @@
-using DnsClient.Internal;
 using EventBus.Infrastructure.Interfaces;
 using MenuService.API.Middleware;
 using MenuService.Business;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog.Web;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
 namespace MenuService.API
 {
