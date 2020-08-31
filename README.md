@@ -22,6 +22,7 @@ Reduces need for non flexible printed menus.
 * Docker containers
 * Event bus: RabbitMq | Azure | Kafka
 * gRPC 
+* Structured logging
 * Hosted background worker services
 * Redis, SQL Server, Mongo / CosmosDb / Cassandra 
 
