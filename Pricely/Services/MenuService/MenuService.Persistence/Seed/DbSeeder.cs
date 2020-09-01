@@ -1,8 +1,10 @@
 ﻿using MenuService.Domain.Entities;
 using MenuService.Persistence;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MenuService.Domain.Seed
@@ -11,13 +13,27 @@ namespace MenuService.Domain.Seed
     {
         private static ApplicationDbContext _context;
 
-        public static async Task SeedAsync(DatabaseSettings settings)
+        public static async Task SeedAsync(DatabaseSettings settings, ILoggerFactory logFactory)
         {
+            var logger = logFactory.CreateLogger<DbSeeder>();
+
             _context = new ApplicationDbContext(settings);
 
-            if (!await _context.Menu.Database.GetCollection<Menu>(nameof(Menu)).AsQueryable().AnyAsync())
+            try
             {
-                await SeedMenus();
+                if ((await _context.Menu.Database.GetCollection<Menu>(nameof(Menu)).AsQueryable().ToListAsync()).Any() == false)
+                {
+                    await SeedMenus();
+                }
+                else
+                {
+                    logger.LogInformation("Data already exists");
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError($"{e.Message} {e.InnerException?.Message}");
+                throw;
             }
         }
 

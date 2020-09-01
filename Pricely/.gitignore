@@ -5,6 +5,11 @@
 
 **/.env
 
+seq-data/*
+
+**/seq-data/
+**/seq-data/*/*
+
 **/appsettings.Development.json
 **/appsettings.Release.json
 **/environemnt.dev.ts

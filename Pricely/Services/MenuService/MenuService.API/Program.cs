@@ -21,13 +21,13 @@ namespace MenuService.API
             {
                 var services = scope.ServiceProvider;
 
-                var logger = services.GetService<ILogger<Program>>();
-
+                var loggerFactory = services.GetService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger<Program>();
                 try
                 {
                     // ==================== MIGRATIONS ==================
                     // comment if you don't want seed values in migrations
-                    MigrateDb(services, logger);
+                    MigrateDb(services, logger, loggerFactory);
 
                     logger.LogInformation($"Running {Assembly.GetExecutingAssembly().FullName}");
                     host.Run();
@@ -61,11 +61,11 @@ namespace MenuService.API
         /// <summary>
         /// Migrates database
         /// </summary>
-        private static void MigrateDb(IServiceProvider services, ILogger<Program> logger)
+        private static void MigrateDb(IServiceProvider services, ILogger<Program> logger, ILoggerFactory loggerFactory)
         {
             logger.LogInformation("Migrating DB");
 
-            DbSeeder.SeedAsync(services.GetService<DatabaseSettings>()).Wait();
+            DbSeeder.SeedAsync(services.GetService<DatabaseSettings>(), loggerFactory).Wait();
 
             logger.LogInformation("Finished migrating DB");
         }
