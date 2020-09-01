@@ -20,11 +20,11 @@ Reduces need for non flexible printed menus.
 #### Technologies and concepts:
 * Microservice architecture
 * Docker containers and orchestration (k8s)
-* Api gateways
-* Aggregators
+* Api gateways (ocelot)
+* Aggregators 
 * Event bus: RabbitMq | Azure | Kafka
 * gRPC 
-* Structured logging
+* Structured logging (seq)
 * Hosted background worker services
 * Redis, SQL Server, Mongo / CosmosDb / Cassandra 
 
