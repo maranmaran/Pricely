@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+
+    #DATA  =========================================================================================================
+    sql.data:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+ 
+
+    #EVENT BUS =========================================================================================================
+    rabbitmq:
+        image: rabbitmq:management-alpine
+        hostname: ${STORAGEAPP_EVENT_BUS_HOST}
+
+    #LOGGING =========================================================================================================
+    seq:
+        image: datalust/seq:latest
+        hostname: seq
+        restart: unless-stopped
+        volumes:
+            - ./seq-data:/data
+
+
+    #SERVICES =========================================================================================================
+    folder.api:
+        image: ${REGISTRY:-storageapp}/folder.api:${PLATFORM:-linux}-${TAG:-latest}
+        build:
+            context: .
+            dockerfile: Services/FolderService/FolderService.API/Dockerfile    
+        depends_on:
+            - sql.data
+            - rabbitmq
+      
+    file.api:
+        image: ${REGISTRY:-storageapp}/file.api:${PLATFORM:-linux}-${TAG:-latest}
+        build:
+            context: .
+            dockerfile: Services/FileService/FileService.API/Dockerfile    
+        depends_on:
+            - sql.data
+            - rabbitmq
+
+    folderfiles.api:
+        image: ${REGISTRY:-storageapp}/folderfiles.api:${PLATFORM:-linux}-${TAG:-latest}
+        build:
+            context: .
+            dockerfile: Services/FolderFiles/FolderFilesService.API/Dockerfile    
+        depends_on:
+            - sql.data
