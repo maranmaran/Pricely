@@ -3,7 +3,10 @@ using FolderFilesService.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 
 namespace Tests.FunctionalTests
 {
@@ -22,13 +25,18 @@ namespace Tests.FunctionalTests
 
                 // Add a database context using an in-memory 
                 // database for testing.
-                services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
-                    options.UseInternalServiceProvider(serviceProvider);
-                });
 
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>(
+                        new DbContextOptions<ApplicationDbContext>(new Dictionary<Type, IDbContextOptionsExtension>())
+                    )
+                    .UseInMemoryDatabase("InMemoryDbForTesting")
+                    .UseInternalServiceProvider(serviceProvider);
+
+                optionsBuilder.UseApplicationServiceProvider(serviceProvider);
+
+                services.AddScoped(x => optionsBuilder.Options);
                 services.AddSingleton<AppSettings>();
+                services.AddSingleton(x => new ApplicationDbContext(optionsBuilder.Options));
 
 
                 // Build the service provider.
@@ -41,11 +49,9 @@ namespace Tests.FunctionalTests
                 var scopedServices = scope.ServiceProvider;
                 var context = scopedServices.GetRequiredService<ApplicationDbContext>();
 
-                var concreteContext = context;
-
                 // Ensure the database is created.
-                concreteContext.Database.EnsureCreated();
-                concreteContext.Database.Migrate();
+                context.Database.EnsureCreated();
+                //context.Seed();
 
                 NLog.LogManager.DisableLogging();
             });

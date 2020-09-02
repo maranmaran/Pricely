@@ -40,19 +40,19 @@ namespace Tests.FunctionalTests.Files
             var data = await Utilities.GetResponseContent<IEnumerable<FileDto>>(response);
 
             Assert.NotEmpty(data);
-            Assert.Equal(3, data.Count());
+            Assert.Equal(6, data.Count());
         }
 
         [Fact]
         public async Task Get_FromRootAnyName_SearchFilesInFolder_StatusOk_RetrievesOnlySomeFiles()
         {
-            var response = await _client.Search(null, new Guid("0344FC6C-81D7-4808-91B4-66DD7F8FEF26"));
+            var response = await _client.Search(null, new Guid("02e84ea4-3480-478F-AE03-2760935B19AC"));
 
             response.EnsureSuccessStatusCode();
             var data = await Utilities.GetResponseContent<IEnumerable<FileDto>>(response);
 
             Assert.NotEmpty(data);
-            Assert.Single(data);
+            Assert.Equal(2, data.Count());
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Tests.FunctionalTests.Files
         [Fact]
         public async Task Delete_Valid_StatusOk()
         {
-            var response = await _client.Delete(new Guid("4AAEECA1-A5BD-409A-8722-0B904E2307A4"));
+            var response = await _client.Delete(new Guid("6AAEECA1-A5BD-409A-8722-0B904E2307A4"));
 
             response.EnsureSuccessStatusCode();
         }

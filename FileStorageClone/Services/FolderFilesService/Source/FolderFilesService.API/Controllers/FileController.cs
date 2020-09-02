@@ -1,11 +1,11 @@
 ﻿using FolderFilesService.Business.Commands.File.Create;
 using FolderFilesService.Business.Commands.File.Delete;
-using FolderFilesService.Business.Queries.File.GetFilesInsideFolderStructure;
 using FolderFilesService.Business.Queries.File.GetFolderFiles;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FolderFilesService.Business.Queries.File.GetFolderFilesRecusivelyQuery;
 
 namespace FolderFilesService.API.Controllers
 {
@@ -25,7 +25,7 @@ namespace FolderFilesService.API.Controllers
         [HttpGet("Search")]
         public async Task<IActionResult> GetFilesInsideFolderStructure([FromQuery] string name, [FromQuery] Guid? parentFolderId, CancellationToken cancellationToken = default)
         {
-            return Ok(await Mediator.Send(new FilesInsideFolderQuery(parentFolderId, name), cancellationToken));
+            return Ok(await Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name), cancellationToken));
         }
 
         /// <summary>

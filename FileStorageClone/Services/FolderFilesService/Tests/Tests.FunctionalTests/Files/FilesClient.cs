@@ -23,12 +23,12 @@ namespace Tests.FunctionalTests.Files
         {
             var url = new StringBuilder("/api/File/Search");
 
-            if (string.IsNullOrWhiteSpace(name) && parentFolderId != null)
+            if (!string.IsNullOrWhiteSpace(name) && parentFolderId != null)
             {
 
                 url.Append($"?name={name}&parentFolderId={parentFolderId}");
             }
-            else if(string.IsNullOrWhiteSpace(name) && parentFolderId == null)
+            else if(!string.IsNullOrWhiteSpace(name) && parentFolderId == null)
             {
                 url.Append($"?name={name}");
             }

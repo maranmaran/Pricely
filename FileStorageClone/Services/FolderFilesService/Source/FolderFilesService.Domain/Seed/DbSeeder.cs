@@ -13,9 +13,15 @@ namespace FolderFilesService.Domain.Seed
             builder.SeedFiles();
         }
 
-        private static void SeedFolders(this ModelBuilder builder)
+        public static void Seed(this ApplicationDbContext context)
         {
-            var entities = new List<Folder>()
+            context.SeedFolders();
+            context.SeedFiles();
+        }
+
+        private static IEnumerable<Folder> GetFolders()
+        {
+            return new List<Folder>()
             {
                 #region Folder structure A
                 new Folder()
@@ -96,12 +102,20 @@ namespace FolderFilesService.Domain.Seed
                 #endregion
 
             };
-
-            builder.Entity<Folder>().HasData(entities);
         }
-        private static void SeedFiles(this ModelBuilder builder)
+        private static void SeedFolders(this ModelBuilder builder)
         {
-            var entities = new List<File>()
+            builder.Entity<Folder>().HasData(GetFolders());
+        }
+        private static void SeedFolders(this ApplicationDbContext context)
+        {
+            context.Folders.AddRange(GetFolders());
+            context.SaveChanges();
+        }
+
+        private static IEnumerable<File> GetFiles()
+        {
+            return new List<File>()
             {
                 #region Root files
                 new File()
@@ -175,7 +189,14 @@ namespace FolderFilesService.Domain.Seed
                 #endregion
             };
 
-            builder.Entity<File>().HasData(entities);
+        }
+        private static void SeedFiles(this ModelBuilder builder)
+        {
+            builder.Entity<File>().HasData(GetFiles());
+        }
+        private static void SeedFiles(this ApplicationDbContext context)
+        {
+            context.AddRange(GetFiles());
         }
     }
 }

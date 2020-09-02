@@ -46,13 +46,13 @@ namespace Tests.FunctionalTests.Folders
         [Fact]
         public async Task Get_GetSpecificFolderContents_StatusOk()
         {
-            var response = await _client.GetContents(new Guid("0138A704-604E-4EBF-8DA4-2271BE9A953D"));
+            var response = await _client.GetContents(new Guid("0138a704-604e-4ebf-8da4-2271be9a953d"));
 
             response.EnsureSuccessStatusCode();
             var data = await Utilities.GetResponseContent<IEnumerable<FolderDto>>(response);
 
             Assert.NotEmpty(data);
-            Assert.Equal(1, data.Count());
+            Assert.Equal(2, data.Count());
         }
 
 
@@ -70,7 +70,7 @@ namespace Tests.FunctionalTests.Folders
         [Fact]
         public async Task Delete_Valid_StatusOk()
         {
-            var response = await _client.Delete(new Guid("0138A704-604E-4EBF-8DA4-2271BE9A953D"));
+            var response = await _client.Delete(new Guid("1138a704-604e-4ebf-8da4-2271be9a953d"));
 
             response.EnsureSuccessStatusCode();
         }
