@@ -7,11 +7,6 @@ services:
         image: mcr.microsoft.com/mssql/server:2019-latest
  
 
-    #EVENT BUS =========================================================================================================
-    rabbitmq:
-        image: rabbitmq:management-alpine
-        hostname: ${STORAGEAPP_EVENT_BUS_HOST}
-
     #LOGGING =========================================================================================================
     seq:
         image: datalust/seq:latest
@@ -22,28 +17,11 @@ services:
 
 
     #SERVICES =========================================================================================================
-    folder.api:
-        image: ${REGISTRY:-storageapp}/folder.api:${PLATFORM:-linux}-${TAG:-latest}
-        build:
-            context: .
-            dockerfile: Services/FolderService/FolderService.API/Dockerfile    
-        depends_on:
-            - sql.data
-            - rabbitmq
-      
-    file.api:
-        image: ${REGISTRY:-storageapp}/file.api:${PLATFORM:-linux}-${TAG:-latest}
-        build:
-            context: .
-            dockerfile: Services/FileService/FileService.API/Dockerfile    
-        depends_on:
-            - sql.data
-            - rabbitmq
 
-    folderfiles.api:
-        image: ${REGISTRY:-storageapp}/folderfiles.api:${PLATFORM:-linux}-${TAG:-latest}
+    storage.api:
+        image: ${REGISTRY:-storageapp}/storage.api:${PLATFORM:-linux}-${TAG:-latest}
         build:
             context: .
-            dockerfile: Services/FolderFiles/FolderFilesService.API/Dockerfile    
+            dockerfile: Services/FolderFilesService/Source/FolderFilesService.API/Dockerfile    
         depends_on:
             - sql.data
