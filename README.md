@@ -10,12 +10,21 @@ Reduces need for non flexible printed menus.
 #### Specifications and diagrams coming soon
 
 #### Plans for services:
+
 * Basket bounded context
+    * Redis 
 * Identity bounded context
+    * SQL (Identity)
 * Items bounded context
+    * NoSQL
 * Menus bounded context
+    * NoSQL
 * Orders bounded context
-* Tables bounded context
+    * SQL 
+* Tables bounded context 
+    * SQL
+* Payments bounded context
+    * TBD
 
 #### Technologies and concepts:
 * Microservice architecture
