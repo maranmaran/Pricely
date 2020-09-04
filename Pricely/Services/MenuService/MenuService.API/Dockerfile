@@ -1,15 +1,12 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR ./
 
-# Keep the project list and command dotnet restore identical in all Dockfiles to maximize image cache utilization
 COPY Shared/Common/ Shared/Common/
-
-#COPY Libraries/Library.Communication/
-
 COPY Libraries/Library.EventBus/EventBus.Infrastructure/ Libraries/Library.EventBus/EventBus.Infrastructure/
 COPY Libraries/Library.EventBus/EventBus.RabbitMQ/ Libraries/Library.EventBus/EventBus.RabbitMQ/
 
@@ -19,10 +16,13 @@ COPY Services/MenuService/MenuService.Persistence/ Services/MenuService/MenuServ
 COPY Services/MenuService/MenuService.Domain/ Services/MenuService/MenuService.Domain/
 
 RUN dotnet restore Services/MenuService/MenuService.API/MenuService.API.csproj 
-
 COPY . .
 WORKDIR /Services/MenuService/MenuService.API
-RUN dotnet publish --no-restore -c Release -o /app
+
+RUN dotnet build --no-restore -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish --no-restore -c Release -o /app/publish
 
 #FROM build as unittest
 #WORKDIR /Services/MenuService/MenuService.UnitTests
@@ -30,9 +30,7 @@ RUN dotnet publish --no-restore -c Release -o /app
 #FROM build as functionaltest
 #WORKDIR /Services/MenuService/MenuService.FunctionalTests
 
-FROM build AS publish
-
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MenuService.API.dll"]
