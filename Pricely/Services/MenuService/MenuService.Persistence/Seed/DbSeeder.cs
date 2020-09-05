@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MenuService.Domain.Entities;
+using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MenuService.Domain.Entities;
-using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 
 namespace MenuService.Persistence.Seed
 {
@@ -20,7 +20,10 @@ namespace MenuService.Persistence.Seed
 
             try
             {
-                if ((await _context.Menu.Database.GetCollection<Menu>(typeof(Menu).GetCollectionName()).AsQueryable().ToListAsync()).Any() == false)
+                var data = await _context.Menu.AsQueryable().ToListAsync();
+                var hasData = data.Any();
+                
+                if (hasData == false)
                 {
                     await SeedMenus();
                 }

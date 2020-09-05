@@ -1,4 +1,5 @@
 ﻿using MenuService.Domain.Entities;
+using MenuService.Persistence.Seed;
 using MongoDB.Driver;
 
 namespace MenuService.Persistence
@@ -13,7 +14,7 @@ namespace MenuService.Persistence
             _database = client.GetDatabase(_settings.Database);
         }
 
-        public IMongoCollection<Menu> Menu => _database.GetCollection<Menu>(nameof(Menu));
+        public IMongoCollection<Menu> Menu => _database.GetCollection<Menu>(typeof(Menu).GetCollectionName());
     }
 }
 
