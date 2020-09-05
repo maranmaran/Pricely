@@ -7,10 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  build-menu-api:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -18,8 +16,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet restore ./Services/MenuService/MenuService.API/MenuService.API.csproj
+    - name: Build Menu API
+      run: dotnet build ./Services/MenuService/MenuService.API/MenuService.API.csproj --configuration Release --no-restore
+
