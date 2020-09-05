@@ -9,14 +9,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <DockerServiceName>menu.api</DockerServiceName>
-    <DockerServiceUrl>https://localhost:5105/api</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include=".dockerignore" />
-    <None Include="docker-compose.dev.yml">
-      <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
-    <None Include="docker-compose.prod.yml">
+    <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />

@@ -2,11 +2,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using IdentityService.Business.Interfaces;
 using IdentityService.Business.Settings;
 using IdentityService.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 
-namespace IdentityService.Business.Interfaces
+namespace IdentityService.Business.Services
 {
     internal class JwtTokenGenerator : IJwtTokenGenerator
     {

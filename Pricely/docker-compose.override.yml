@@ -36,6 +36,7 @@ services:
 
     #SERVICES =======================================================================================================
     items.api:
+        env_file: .env
         environment:
             - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
             - DatabaseSettings__ConnectionString=${PRICELY_ITEMS_DB}
@@ -51,6 +52,7 @@ services:
             - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
                         # The API Gateway redirects and access through the internal port (80). 
     identity.api:
+        env_file: .env
         environment:
             - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
             - DatabaseSettings__ConnectionString=${PRICELY_IDENTITY_DB}
@@ -66,6 +68,7 @@ services:
             - "5104:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
                         # The API Gateway redirects and access
     menu.api:
+        env_file: .env
         environment:
             - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
             - DatabaseSettings__ConnectionString=${PRICELY_MENU_DB}

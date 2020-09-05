@@ -1,6 +1,7 @@
 ﻿using IdentityService.Domain.Entities;
 using Newtonsoft.Json;
 using System;
+using IdentityService.Domain.ValueObjects;
 
 namespace IdentityService.Persistence.DTOModels
 {

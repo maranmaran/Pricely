@@ -1,5 +1,4 @@
 using Autofac.Extensions.DependencyInjection;
-using MenuService.Domain.Seed;
 using MenuService.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Reflection;
+using MenuService.Persistence.Seed;
 
 namespace MenuService.API
 {

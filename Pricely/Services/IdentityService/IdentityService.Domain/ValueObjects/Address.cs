@@ -1,9 +1,8 @@
-﻿using IdentityService.Domain.ValueObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IdentityService.Domain.Entities
+namespace IdentityService.Domain.ValueObjects
 {
     public class Address : ValueObjectBase
     {

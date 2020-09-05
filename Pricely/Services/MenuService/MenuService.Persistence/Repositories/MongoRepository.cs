@@ -1,13 +1,14 @@
-﻿using MenuService.Domain.Attributes;
-using MenuService.Domain.Interfaces;
+﻿using MenuService.Domain.Interfaces;
 using MenuService.Persistence.Interfaces;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using MenuService.Persistence.Seed;
 
 namespace MenuService.Persistence.Repositories
 {
@@ -19,18 +20,10 @@ namespace MenuService.Persistence.Repositories
         {
             var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.Database);
 
-            Collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
+            Collection = database.GetCollection<TDocument>(typeof(TDocument).GetCollectionName());
         }
 
-        private protected string GetCollectionName(Type documentType)
-        {
-            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
-                    typeof(BsonCollectionAttribute),
-                    true)
-                .FirstOrDefault())?.CollectionName;
-        }
-
-        public virtual IQueryable<TDocument> AsQueryable()
+        public virtual IMongoQueryable<TDocument> AsQueryable()
         {
             return Collection.AsQueryable();
         }

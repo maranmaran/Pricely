@@ -1,4 +1,5 @@
 ﻿using IdentityService.Business.Interfaces;
+using IdentityService.Business.Services;
 using IdentityService.Business.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

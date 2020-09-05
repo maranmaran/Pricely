@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using MenuService.Persistence.DTOModels;
 using MenuService.Persistence.Interfaces;
+using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MenuService.Business.Queries.Menu.GetAll
 {
@@ -21,7 +22,8 @@ namespace MenuService.Business.Queries.Menu.GetAll
 
         public async Task<IEnumerable<MenuDto>> Handle(GetMenusQuery request, CancellationToken cancellationToken)
         {
-            var entities = _repository.FilterBy(x => true);
+            //var entities = _repository.FilterBy(x => ); // Query by user
+            var entities = await _repository.AsQueryable().ToListAsync(cancellationToken);
 
             return _mapper.Map<IEnumerable<MenuDto>>(entities);
         }

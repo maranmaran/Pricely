@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using IdentityService.Domain.ValueObjects;
 
-namespace IdentityService.Domain.Entities
+namespace IdentityService.Domain.ValueObjects
 {
     public class ContactDetails: ValueObjectBase
     {

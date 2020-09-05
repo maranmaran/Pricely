@@ -1,7 +1,7 @@
 ﻿using MenuService.Domain.Interfaces;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ namespace MenuService.Persistence.Interfaces
 {
     public interface IMongoRepository<TDocument> where TDocument : IDocument
     {
-        IQueryable<TDocument> AsQueryable();
+        IMongoQueryable<TDocument> AsQueryable();
 
         IEnumerable<TDocument> FilterBy(
             Expression<Func<TDocument, bool>> filterExpression);

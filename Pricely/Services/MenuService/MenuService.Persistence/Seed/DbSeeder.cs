@@ -1,13 +1,12 @@
-﻿using MenuService.Domain.Entities;
-using MenuService.Persistence;
-using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MenuService.Domain.Entities;
+using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
-namespace MenuService.Domain.Seed
+namespace MenuService.Persistence.Seed
 {
     public class DbSeeder
     {
@@ -21,7 +20,7 @@ namespace MenuService.Domain.Seed
 
             try
             {
-                if ((await _context.Menu.Database.GetCollection<Menu>(nameof(Menu)).AsQueryable().ToListAsync()).Any() == false)
+                if ((await _context.Menu.Database.GetCollection<Menu>(typeof(Menu).GetCollectionName()).AsQueryable().ToListAsync()).Any() == false)
                 {
                     await SeedMenus();
                 }
