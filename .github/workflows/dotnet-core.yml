@@ -1,11 +1,9 @@
 name: Build projects
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+# trigger if any branch is pushed or pull request is open 
+on: [push, pull_request]
 
+# build all service code
 jobs:
 
   build-menu-api:
