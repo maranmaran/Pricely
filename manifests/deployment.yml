@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: pricelydockerimage 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pricelydockerimage
+  template:
+    metadata:
+      labels:
+        app: pricelydockerimage 
+    spec:
+      containers:
+        - name: pricelydockerimage 
+          image: pricely.azurecr.io/pricelydockerimage
+          ports:
+          - containerPort: 80
