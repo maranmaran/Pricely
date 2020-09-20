@@ -12,11 +12,7 @@ COPY Shared/Common/ Shared/Common/
 
 COPY Libraries/Library.EventBus/EventBus.Infrastructure/ Libraries/Library.EventBus/EventBus.Infrastructure/
 COPY Libraries/Library.EventBus/EventBus.RabbitMQ/ Libraries/Library.EventBus/EventBus.RabbitMQ/
-
-#COPY Services/ItemService/ItemService.API/ Services/ItemService/ItemService.API/
-#COPY Services/ItemService/ItemService.Business/ Services/ItemService/ItemService.Business/
-#COPY Services/ItemService/ItemService.Persistence/ Services/ItemService/ItemService.Persistence/
-#COPY Services/ItemService/ItemService.Domain/ Services/ItemService/ItemService.Domain/
+COPY Libraries/Library.EventBus/EventBus.Azure/ Libraries/Library.EventBus/EventBus.Azure/
 
 COPY Services/IdentityService/IdentityService.API/ Services/IdentityService/IdentityService.API/
 COPY Services/IdentityService/IdentityService.Business/ Services/IdentityService/IdentityService.Business/

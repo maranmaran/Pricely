@@ -62,6 +62,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MenuService.Domain", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MenuService.Persistence", "Services\MenuService\MenuService.Persistence\MenuService.Persistence.csproj", "{20EE7E70-9CD0-4DC1-BF07-B52952C3FA75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Azure", "Libraries\Library.EventBus\EventBus.Azure\EventBus.Azure.csproj", "{F4AD82A6-C7DA-42E3-886E-DE434BE4F893}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{20EE7E70-9CD0-4DC1-BF07-B52952C3FA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20EE7E70-9CD0-4DC1-BF07-B52952C3FA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20EE7E70-9CD0-4DC1-BF07-B52952C3FA75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4AD82A6-C7DA-42E3-886E-DE434BE4F893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4AD82A6-C7DA-42E3-886E-DE434BE4F893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4AD82A6-C7DA-42E3-886E-DE434BE4F893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4AD82A6-C7DA-42E3-886E-DE434BE4F893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +170,7 @@ Global
 		{3E372239-42DF-4D26-97CC-93C36EAC0D8A} = {D3E157B0-0B56-4CF9-A085-A0B67E9E25A5}
 		{92D6D991-A821-465B-A549-5DDD75AA623C} = {D3E157B0-0B56-4CF9-A085-A0B67E9E25A5}
 		{20EE7E70-9CD0-4DC1-BF07-B52952C3FA75} = {D3E157B0-0B56-4CF9-A085-A0B67E9E25A5}
+		{F4AD82A6-C7DA-42E3-886E-DE434BE4F893} = {57E99F6F-ACCD-4EE1-AB42-DD8C6CB3EC87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CDE77E8-C8E5-4903-B304-B7AABD71030F}

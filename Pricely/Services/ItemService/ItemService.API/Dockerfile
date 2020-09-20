@@ -12,6 +12,7 @@ COPY Shared/Common/ Shared/Common/
 
 COPY Libraries/Library.EventBus/EventBus.Infrastructure/ Libraries/Library.EventBus/EventBus.Infrastructure/
 COPY Libraries/Library.EventBus/EventBus.RabbitMQ/ Libraries/Library.EventBus/EventBus.RabbitMQ/
+COPY Libraries/Library.EventBus/EventBus.Azure/ Libraries/Library.EventBus/EventBus.Azure/
 
 COPY Services/ItemService/ItemService.API/ Services/ItemService/ItemService.API/
 COPY Services/ItemService/ItemService.Business/ Services/ItemService/ItemService.Business/

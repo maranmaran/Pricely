@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Library.EventBus\EventBus.Azure\EventBus.Azure.csproj" />
     <ProjectReference Include="..\ItemService.Business\ItemService.Business.csproj" />
   </ItemGroup>
 

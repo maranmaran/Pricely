@@ -17,13 +17,13 @@ using System.Threading.Tasks;
 
 namespace EventBus.RabbitMQ
 {
-    public class EventBusRabbitMQ : IEventBus, IDisposable
+    public class EventBus : IEventBus, IDisposable
     {
         private const string BrokerName = "event_bus";
         private const string ScopeName = "event_bus";
 
-        private readonly ILogger<EventBusRabbitMQ> _logger;
-        private readonly IPersistentConnection _persistentConnection;
+        private readonly ILogger<EventBus> _logger;
+        private readonly IPersistentConnection _persistentConnectionRabbitMq;
         private readonly IEventBusSubscriptionsManager _subscriptionsManager;
         private readonly int _retryCount;
         private readonly ILifetimeScope _scopeFactory;
@@ -31,15 +31,15 @@ namespace EventBus.RabbitMQ
         private IModel _consumerChannel;
         private string _queueName;
 
-        public EventBusRabbitMQ(
-            ILogger<EventBusRabbitMQ> logger,
-            IPersistentConnection persistentConnection,
+        public EventBus(
+            ILogger<EventBus> logger,
+            IPersistentConnection persistentConnectionRabbitMq,
             IEventBusSubscriptionsManager subscriptionsManager,
             ILifetimeScope scopeFactory, string queueName = null, int retryCount = 5
             )
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
+            _persistentConnectionRabbitMq = persistentConnectionRabbitMq ?? throw new ArgumentNullException(nameof(persistentConnectionRabbitMq));
             _subscriptionsManager = subscriptionsManager ?? throw new ArgumentNullException(nameof(subscriptionsManager));
             _scopeFactory = scopeFactory;
 
@@ -52,12 +52,12 @@ namespace EventBus.RabbitMQ
 
         private void OnEventRemoved(object sender, string eventName)
         {
-            if (!_persistentConnection.IsConnected)
+            if (!_persistentConnectionRabbitMq.IsConnected)
             {
-                _persistentConnection.TryConnect();
+                _persistentConnectionRabbitMq.TryConnect();
             }
 
-            using (var channel = _persistentConnection.CreateModel())
+            using (var channel = _persistentConnectionRabbitMq.CreateModel())
             {
                 channel.QueueUnbind(
                     queue: _queueName,
@@ -75,9 +75,9 @@ namespace EventBus.RabbitMQ
 
         public void Publish(Event @event)
         {
-            if (!_persistentConnection.IsConnected)
+            if (!_persistentConnectionRabbitMq.IsConnected)
             {
-                _persistentConnection.TryConnect();
+                _persistentConnectionRabbitMq.TryConnect();
             }
 
             var policy = Policy.Handle<BrokerUnreachableException>()
@@ -91,7 +91,7 @@ namespace EventBus.RabbitMQ
 
             _logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, eventName);
 
-            using (var channel = _persistentConnection.CreateModel())
+            using (var channel = _persistentConnectionRabbitMq.CreateModel())
             {
                 _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
 
@@ -175,12 +175,12 @@ namespace EventBus.RabbitMQ
             if (containsKey)
                 return;
 
-            if (!_persistentConnection.IsConnected)
+            if (!_persistentConnectionRabbitMq.IsConnected)
             {
-                _persistentConnection.TryConnect();
+                _persistentConnectionRabbitMq.TryConnect();
             }
 
-            using (var channel = _persistentConnection.CreateModel())
+            using (var channel = _persistentConnectionRabbitMq.CreateModel())
             {
                 // add queue
                 channel.QueueBind(
@@ -303,14 +303,14 @@ namespace EventBus.RabbitMQ
         /// <returns></returns>
         private IModel CreateConsumerChannel()
         {
-            if (!_persistentConnection.IsConnected)
+            if (!_persistentConnectionRabbitMq.IsConnected)
             {
-                _persistentConnection.TryConnect();
+                _persistentConnectionRabbitMq.TryConnect();
             }
 
             _logger.LogTrace("Creating RabbitMQ consumer channel");
 
-            var channel = _persistentConnection.CreateModel();
+            var channel = _persistentConnectionRabbitMq.CreateModel();
 
             channel.ExchangeDeclare(exchange: BrokerName, ExchangeType.Direct);
 
