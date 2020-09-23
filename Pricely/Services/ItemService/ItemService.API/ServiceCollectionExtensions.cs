@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventBus.Azure;
 using EventBus.RabbitMQ;
 using FluentValidation.AspNetCore;
 using ItemService.API.LibraryConfigurations.MediatR;
@@ -16,7 +17,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using EventBus.Azure;
 
 namespace ItemService.API
 {
@@ -104,11 +104,13 @@ namespace ItemService.API
         /// </summary>
         public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
         {
+            var corsAllowedOrigins = configuration.GetSection("CORSAllowedOrigins")?.Get<string[]>();
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("AllowedCorsOrigins",
                     builder => builder
-                        .WithOrigins(configuration.GetSection("CORSAllowedOrigins").Get<string[]>())
+                        .WithOrigins(corsAllowedOrigins ?? new[] { "*" })
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
