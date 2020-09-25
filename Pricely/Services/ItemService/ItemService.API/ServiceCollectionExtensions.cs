@@ -104,13 +104,11 @@ namespace ItemService.API
         /// </summary>
         public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
         {
-            var corsAllowedOrigins = configuration.GetSection("CORSAllowedOrigins")?.Get<string[]>();
-
             services.AddCors(opt =>
             {
                 opt.AddPolicy("AllowedCorsOrigins",
                     builder => builder
-                        .WithOrigins(corsAllowedOrigins ?? new[] { "*" })
+                        .WithOrigins(configuration.GetSection("CORSAllowedOrigins").Get<string[]>())
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
