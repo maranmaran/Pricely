@@ -1,3 +1,4 @@
+using Autofac.Extensions.DependencyInjection;
 using ItemService.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Reflection;
-using Autofac.Extensions.DependencyInjection;
 
 namespace ItemService.API
 {
@@ -25,13 +25,7 @@ namespace ItemService.API
 
                 try
                 {
-                    // ==================== MIGRATIONS ==================
-                    // comment if you don't want seed values in migrations
-                    logger.LogInformation("Migrating DB");
-                    var context = services.GetService<ApplicationDbContext>();
-                    context.Database.Migrate();
-                    logger.LogInformation("Finished migrating DB");
-
+                    MigrateDatabase(logger, services); // comment if you don't want seed values in migrations
 
                     logger.LogInformation($"Running {Assembly.GetExecutingAssembly().FullName}");
                     host.Run();
@@ -47,6 +41,16 @@ namespace ItemService.API
                     NLog.LogManager.Shutdown();
                 }
             }
+        }
+
+        private static void MigrateDatabase(ILogger<Program> logger, IServiceProvider services)
+        {
+            logger.LogInformation("Migrating DB");
+
+            var context = services.GetService<ApplicationDbContext>();
+            context.Database.Migrate();
+
+            logger.LogInformation("Finished migrating DB");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

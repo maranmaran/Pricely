@@ -19,7 +19,7 @@ namespace ItemService.Persistence
             // Add database
             services.AddDbContext<ApplicationDbContext>(o =>
             {
-                o.UseSqlServer(configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]);
+                o.UseSqlServer(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
                 o.EnableSensitiveDataLogging();
                 o.EnableDetailedErrors();
                 o.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
