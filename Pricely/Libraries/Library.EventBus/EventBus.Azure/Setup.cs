@@ -17,7 +17,7 @@ namespace EventBus.Azure
 
             services.AddSingleton<IPersistentConnection>(sp =>
             {
-                var serviceBusConnectionString = configuration["EventBus:AzureConnection"];
+                var serviceBusConnectionString = configuration.GetValue<string>("EventBus:AzureConnection");
                 var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
                 return new DefaultPersistentConnection(serviceBusConnection);

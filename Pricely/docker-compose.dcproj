@@ -8,7 +8,6 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
   </PropertyGroup>
   <PropertyGroup>
-    <DockerServiceName>menu.api</DockerServiceName>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
