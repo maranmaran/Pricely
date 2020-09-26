@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog.Web;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
 namespace MenuService.API
 {
@@ -55,7 +54,7 @@ namespace MenuService.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory _loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseCors("AllowedCorsOrigins");
 
