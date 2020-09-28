@@ -165,7 +165,7 @@ namespace ItemService.API
             }
 
             // handlers
-            //services.AddTransient<OrderStartedIntegrationEventHandler>();
+            //services.AddTransient<OrderStartedEventHandler>();
         }
     }
 }

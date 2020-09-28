@@ -22,8 +22,7 @@ namespace EventBus.Azure
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly SubscriptionClient _subscriptionClient;
         private readonly ILifetimeScope _autofac;
-        private readonly string _autofacScopeName = "eshop_event_bus";
-        private const string IntegrationEventSuffix = "IntegrationEvent";
+        private readonly string _autofacScopeName = "pricely_event_bus";
 
         public EventBus(
             IPersistentConnection persistentConnection,
@@ -46,7 +45,7 @@ namespace EventBus.Azure
 
         public void Publish(Event @event)
         {
-            var eventName = @event.GetType().Name.Replace(IntegrationEventSuffix, "");
+            var eventName = @event.GetType().Name;
             var jsonMessage = JsonConvert.SerializeObject(@event);
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
@@ -78,7 +77,7 @@ namespace EventBus.Azure
             where TEvent : Event
             where THandler : IEventHandler<TEvent>
         {
-            var eventName = typeof(TEvent).Name.Replace(IntegrationEventSuffix, "");
+            var eventName = typeof(TEvent).Name;
 
             var containsKey = _subsManager.HasSubscriptionsForEvent<TEvent>();
             if (!containsKey)
@@ -108,7 +107,7 @@ namespace EventBus.Azure
         {
             _logger.LogInformation($"Unsubscribing from event (Event: ${nameof(TEvent)}, Handler: ${nameof(THandler)})");
 
-            var eventName = typeof(THandler).Name.Replace(IntegrationEventSuffix, "");
+            var eventName = typeof(THandler).Name;
 
             try
             {
@@ -145,7 +144,7 @@ namespace EventBus.Azure
             _subscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
                 {
-                    var eventName = $"{message.Label}{IntegrationEventSuffix}";
+                    var eventName = message.Label;
                     var messageData = Encoding.UTF8.GetString(message.Body);
 
                     // Complete the message so that it is not received again.
@@ -192,7 +191,7 @@ namespace EventBus.Azure
                         continue;
 
                     var eventType = _subsManager.GetEventTypeByName(eventName);
-                    var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                    var @event = JsonConvert.DeserializeObject(message, eventType);
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
                     var handleMethod = concreteType.GetMethod("Handle");
@@ -200,7 +199,7 @@ namespace EventBus.Azure
                     if (handleMethod == null)
                         throw new Exception("Missing handler function");
 
-                    var invokeObj = handleMethod.Invoke(handler, new[] { integrationEvent });
+                    var invokeObj = handleMethod.Invoke(handler, new[] { @event });
 
                     if (invokeObj == null)
                         throw new Exception("Cannot invoke handler method");
@@ -214,6 +213,9 @@ namespace EventBus.Azure
 
         private void RemoveDefaultRule()
         {
+            return;
+
+            //TODO - problematic
             try
             {
                 _subscriptionClient

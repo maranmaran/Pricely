@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventBus.Azure;
 using EventBus.RabbitMQ;
 using FluentValidation.AspNetCore;
 using IdentityService.API.LibraryConfigurations.MediatR;
@@ -16,7 +17,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using EventBus.Azure;
 
 namespace IdentityService.API
 {
@@ -158,7 +158,7 @@ namespace IdentityService.API
             }
 
             // handlers
-            //services.AddTransient<OrderStartedIntegrationEventHandler>();
+            //services.AddTransient<OrderStartedEventHandler>();
         }
 
 
