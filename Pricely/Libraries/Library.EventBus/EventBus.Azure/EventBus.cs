@@ -25,8 +25,11 @@ namespace EventBus.Azure
         private readonly string _autofacScopeName = "eshop_event_bus";
         private const string IntegrationEventSuffix = "IntegrationEvent";
 
-        public EventBus(IPersistentConnection persistentConnection,
-            ILogger<EventBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
+        public EventBus(
+            IPersistentConnection persistentConnection,
+            ILogger<EventBus> logger,
+            IEventBusSubscriptionsManager subsManager,
+            string subscriptionClientName,
             ILifetimeScope autofac)
         {
             _persistentConnection = persistentConnection;
@@ -55,6 +58,8 @@ namespace EventBus.Azure
             };
 
             var topicClient = _persistentConnection.CreateModel();
+
+            _logger.LogInformation($"Sending message to {topicClient.TopicName} topic");
 
             topicClient.SendAsync(message)
                 .GetAwaiter()
@@ -101,6 +106,8 @@ namespace EventBus.Azure
             where TEvent : Event
             where THandler : IEventHandler<TEvent>
         {
+            _logger.LogInformation($"Unsubscribing from event (Event: ${nameof(TEvent)}, Handler: ${nameof(THandler)})");
+
             var eventName = typeof(THandler).Name.Replace(IntegrationEventSuffix, "");
 
             try
