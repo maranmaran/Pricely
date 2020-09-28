@@ -1,7 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.API.LibraryConfigurations.MediatR
 {
@@ -18,7 +18,7 @@ namespace ItemService.API.LibraryConfigurations.MediatR
         {
             _logger.LogInformation($"Handling {typeof(TRequest).Name}");
             var response = await next();
-            _logger.LogInformation($"Handled {typeof(TResponse).Name}");
+            _logger.LogInformation($"Handled {typeof(TRequest).Name}");
 
             return response;
         }

@@ -18,7 +18,7 @@ namespace MenuService.API.LibraryConfigurations.MediatR
         {
             _logger.LogInformation($"Handling {typeof(TRequest).Name}");
             var response = await next();
-            _logger.LogInformation($"Handled {typeof(TResponse).Name}");
+            _logger.LogInformation($"Handled {typeof(TRequest).Name}");
 
             return response;
         }

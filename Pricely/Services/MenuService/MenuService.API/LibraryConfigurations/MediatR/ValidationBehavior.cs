@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.Logging;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace MenuService.API.LibraryConfigurations.MediatR
@@ -26,7 +26,7 @@ namespace MenuService.API.LibraryConfigurations.MediatR
         {
             var context = new ValidationContext(request);
 
-            _logger.LogInformation($"Validating {typeof(TResponse).Name}");
+            _logger.LogInformation($"Validating {typeof(TRequest).Name}");
 
             var failures = _validators
                 .Select(v => v.Validate(request))
@@ -34,7 +34,7 @@ namespace MenuService.API.LibraryConfigurations.MediatR
                 .Where(f => f != null)
                 .ToList();
 
-            _logger.LogInformation($"Validated {typeof(TResponse).Name}");
+            _logger.LogInformation($"Validated {typeof(TRequest).Name}");
 
             if (failures.Count != 0)
             {
