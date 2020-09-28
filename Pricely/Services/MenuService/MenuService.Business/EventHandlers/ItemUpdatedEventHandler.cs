@@ -1,6 +1,7 @@
 ﻿using EventBus.Infrastructure.Interfaces;
 using EventBus.Infrastructure.Models;
 using MenuService.Persistence.DTOModels;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace MenuService.Business.EventHandlers
@@ -13,9 +14,17 @@ namespace MenuService.Business.EventHandlers
 
     public class ItemUpdatedEventHandler : IEventHandler<ItemUpdatedEvent>
     {
-        public Task Handle(ItemUpdatedEvent @event)
+        private readonly ILogger<ItemUpdatedEventHandler> _logger;
+
+        public ItemUpdatedEventHandler(ILogger<ItemUpdatedEventHandler> logger)
         {
-            throw new System.NotImplementedException();
+            _logger = logger;
+        }
+
+        public async Task Handle(ItemUpdatedEvent @event)
+        {
+            _logger.LogInformation($"Handling event {nameof(ItemUpdatedEvent)}");
+            _logger.LogInformation($"Event data: ItemId - {@event.Id}");
         }
     }
 }

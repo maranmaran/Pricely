@@ -1,5 +1,6 @@
 ﻿using EventBus.Infrastructure.Interfaces;
 using EventBus.Infrastructure.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -12,9 +13,17 @@ namespace MenuService.Business.EventHandlers
 
     public class ItemDeletedEventHandler : IEventHandler<ItemDeletedEvent>
     {
-        public Task Handle(ItemDeletedEvent @event)
+        private readonly ILogger<ItemDeletedEventHandler> _logger;
+
+        public ItemDeletedEventHandler(ILogger<ItemDeletedEventHandler> logger)
         {
-            throw new NotImplementedException();
+            _logger = logger;
+        }
+
+        public async Task Handle(ItemDeletedEvent @event)
+        {
+            _logger.LogInformation($"Handling event {nameof(ItemDeletedEvent)}");
+            _logger.LogInformation($"Event data: ItemId - {@event.Id}");
         }
     }
 }
