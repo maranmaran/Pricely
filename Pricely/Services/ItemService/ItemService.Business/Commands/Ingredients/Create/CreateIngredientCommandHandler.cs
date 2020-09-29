@@ -1,20 +1,20 @@
-﻿using System;
+﻿using AutoMapper;
+using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
+using ItemService.Domain.Entities;
+using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using Common.Exceptions;
-using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
-using MediatR;
 
 namespace ItemService.Business.Commands.Ingredients.Create
 {
     internal class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, Guid>
     {
-        private readonly IRepository<Ingredient> _repository;
+        private readonly IGenericEfRepository<Ingredient> _repository;
         private readonly IMapper _mapper;
 
-        public CreateIngredientCommandHandler(IRepository<Ingredient> repository, IMapper mapper)
+        public CreateIngredientCommandHandler(IGenericEfRepository<Ingredient> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

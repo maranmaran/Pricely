@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
-using ItemService.Persistence.Interfaces;
 using MediatR;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using DataAccess.Sql.Interfaces;
 
 namespace ItemService.Business.Queries.Allergens.GetAllergens
 {
     internal class GetAllergensQueryHandler : IRequestHandler<GetAllergensQuery, IEnumerable<AllergenDto>>
     {
-        private readonly IRepository<Allergen> _repository;
+        private readonly IGenericEfRepository<Allergen> _repository;
         private readonly IMapper _mapper;
 
-        public GetAllergensQueryHandler(IRepository<Allergen> repository, IMapper mapper)
+        public GetAllergensQueryHandler(IGenericEfRepository<Allergen> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

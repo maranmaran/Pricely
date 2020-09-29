@@ -4,27 +4,27 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using ItemService.Domain;
-using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
+using DataAccess.Sql.Entities;
+using DataAccess.Sql.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace ItemService.Persistence.Repositories
+namespace DataAccess.Sql.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
+    internal class GenericEfRepository<TEntity> : IGenericEfRepository<TEntity> where TEntity : EntityBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private protected readonly DbSet<TEntity> Entities;
 
-        public Repository(ApplicationDbContext context)
+        public GenericEfRepository(IApplicationDbContext context)
         {
             _context = context;
             Entities = _context.Set<TEntity>();
         }
 
 
-        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null,
+        public async Task<IEnumerable<TEntity>> GetAll(
+            Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
@@ -55,7 +55,8 @@ namespace ItemService.Persistence.Repositories
             return await entities.ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
+        public async Task<TEntity> Get(
+            Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,

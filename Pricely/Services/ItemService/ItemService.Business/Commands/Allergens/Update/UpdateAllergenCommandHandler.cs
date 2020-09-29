@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
 using EventBus.Infrastructure.Interfaces;
 using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
 using MediatR;
 using System;
 using System.Threading;
@@ -12,11 +12,11 @@ namespace ItemService.Business.Commands.Allergens.Update
 {
     internal class UpdateAllergenCommandHandler : IRequestHandler<UpdateAllergenCommand, Unit>
     {
-        private readonly IRepository<Allergen> _repository;
+        private readonly IGenericEfRepository<Allergen> _repository;
         private readonly IMapper _mapper;
         private readonly IEventBus _eventBus;
 
-        public UpdateAllergenCommandHandler(IRepository<Allergen> repository, IMapper mapper, IEventBus eventBus)
+        public UpdateAllergenCommandHandler(IGenericEfRepository<Allergen> repository, IMapper mapper, IEventBus eventBus)
         {
             _repository = repository;
             _mapper = mapper;

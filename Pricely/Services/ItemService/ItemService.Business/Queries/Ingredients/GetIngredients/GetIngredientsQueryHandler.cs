@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using DataAccess.Sql.Interfaces;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
-using ItemService.Persistence.Interfaces;
 using MediatR;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Queries.Ingredients.GetIngredients
 {
     internal class GetIngredientsQueryHandler : IRequestHandler<GetIngredientsQuery, IEnumerable<IngredientDto>>
     {
-        private readonly IRepository<Ingredient> _repository;
+        private readonly IGenericEfRepository<Ingredient> _repository;
         private readonly IMapper _mapper;
 
-        public GetIngredientsQueryHandler(IRepository<Ingredient> repository, IMapper mapper)
+        public GetIngredientsQueryHandler(IGenericEfRepository<Ingredient> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

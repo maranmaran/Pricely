@@ -1,4 +1,4 @@
-﻿using System;
+﻿using DataAccess.Sql.Entities;
 using System.Collections.Generic;
 
 namespace ItemService.Domain.Entities

@@ -1,4 +1,6 @@
-﻿namespace ItemService.Persistence.DTOModels
+﻿using DataAccess.Sql.Entities;
+
+namespace ItemService.Persistence.DTOModels
 {
     public class IngredientDto : EntityDtoBase
     {

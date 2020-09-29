@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using ItemService.Domain.Entities;
+using DataAccess.Sql.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace ItemService.Persistence.Interfaces
+namespace DataAccess.Sql.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : EntityBase
+    public interface IGenericEfRepository<TEntity> where TEntity : EntityBase
     {
         /// <summary>
         /// Gets all entities

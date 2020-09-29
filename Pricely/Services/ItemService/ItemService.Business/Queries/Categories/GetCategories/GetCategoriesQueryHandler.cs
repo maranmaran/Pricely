@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using DataAccess.Sql.Interfaces;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
-using ItemService.Persistence.Interfaces;
 using MediatR;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Queries.Categories.GetCategories
 {
-    internal class GetCategorysQueryHandler : IRequestHandler<GetCategorysQuery, IEnumerable<CategoryDto>>
+    internal class GetCategoriesQueryHandler : IRequestHandler<GetCategorysQuery, IEnumerable<CategoryDto>>
     {
-        private readonly IRepository<Category> _repository;
+        private readonly IGenericEfRepository<Category> _repository;
         private readonly IMapper _mapper;
 
-        public GetCategorysQueryHandler(IRepository<Category> repository, IMapper mapper)
+        public GetCategoriesQueryHandler(IGenericEfRepository<Category> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

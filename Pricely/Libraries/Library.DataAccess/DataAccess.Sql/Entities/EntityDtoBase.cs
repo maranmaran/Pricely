@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ItemService.Persistence.DTOModels
+namespace DataAccess.Sql.Entities
 {
     public abstract class EntityDtoBase
     {

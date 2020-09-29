@@ -1,7 +1,7 @@
 ﻿using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
 using EventBus.Infrastructure.Interfaces;
 using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,11 +12,11 @@ namespace ItemService.Business.Commands.Items.Delete
 {
     internal class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, Unit>
     {
-        private readonly IRepository<Item> _repository;
+        private readonly IGenericEfRepository<Item> _repository;
         private readonly IEventBus _eventBus;
         private readonly ILogger<DeleteItemCommand> _logger;
 
-        public DeleteItemCommandHandler(IRepository<Item> repository, IEventBus eventBus, ILogger<DeleteItemCommand> logger)
+        public DeleteItemCommandHandler(IGenericEfRepository<Item> repository, IEventBus eventBus, ILogger<DeleteItemCommand> logger)
         {
             _repository = repository;
             _eventBus = eventBus;

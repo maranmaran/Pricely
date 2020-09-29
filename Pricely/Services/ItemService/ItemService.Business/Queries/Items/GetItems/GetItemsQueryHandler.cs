@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using DataAccess.Sql.Interfaces;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
-using ItemService.Persistence.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -12,10 +12,10 @@ namespace ItemService.Business.Queries.Items.GetItems
 {
     internal class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, IEnumerable<ItemDto>>
     {
-        private readonly IRepository<Item> _repository;
+        private readonly IGenericEfRepository<Item> _repository;
         private readonly IMapper _mapper;
 
-        public GetItemsQueryHandler(IRepository<Item> repository, IMapper mapper)
+        public GetItemsQueryHandler(IGenericEfRepository<Item> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

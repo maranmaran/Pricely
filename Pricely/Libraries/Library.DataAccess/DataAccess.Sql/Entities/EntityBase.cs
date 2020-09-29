@@ -1,7 +1,7 @@
 ﻿using System;
-using ItemService.Domain.Interfaces;
+using DataAccess.Sql.Interfaces;
 
-namespace ItemService.Domain.Entities
+namespace DataAccess.Sql.Entities
 {
     public abstract class EntityBase : IEntity
     {

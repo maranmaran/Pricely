@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
 using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
 using MediatR;
 using System;
 using System.Threading;
@@ -11,10 +11,10 @@ namespace ItemService.Business.Commands.Allergens.Create
 {
     internal class CreateAllergenCommandHandler : IRequestHandler<CreateAllergenCommand, Guid>
     {
-        private readonly IRepository<Allergen> _repository;
+        private readonly IGenericEfRepository<Allergen> _repository;
         private readonly IMapper _mapper;
 
-        public CreateAllergenCommandHandler(IRepository<Allergen> repository, IMapper mapper)
+        public CreateAllergenCommandHandler(IGenericEfRepository<Allergen> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

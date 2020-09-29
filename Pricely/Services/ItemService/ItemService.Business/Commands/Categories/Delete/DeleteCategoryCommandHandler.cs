@@ -1,20 +1,20 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Exceptions;
+﻿using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
 using EventBus.Infrastructure.Interfaces;
 using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
 using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Commands.Categories.Delete
 {
     internal class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Unit>
     {
-        private readonly IRepository<Category> _repository;
+        private readonly IGenericEfRepository<Category> _repository;
         private readonly IEventBus _eventBus;
 
-        public DeleteCategoryCommandHandler(IRepository<Category> repository, IEventBus eventBus)
+        public DeleteCategoryCommandHandler(IGenericEfRepository<Category> repository, IEventBus eventBus)
         {
             _repository = repository;
             _eventBus = eventBus;

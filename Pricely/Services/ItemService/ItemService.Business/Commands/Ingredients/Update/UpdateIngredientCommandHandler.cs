@@ -1,22 +1,22 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
 using EventBus.Infrastructure.Interfaces;
 using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
 using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Commands.Ingredients.Update
 {
     internal class UpdateIngredientCommandHandler : IRequestHandler<UpdateIngredientCommand, Unit>
     {
-        private readonly IRepository<Ingredient> _repository;
+        private readonly IGenericEfRepository<Ingredient> _repository;
         private readonly IMapper _mapper;
         private readonly IEventBus _eventBus;
 
-        public UpdateIngredientCommandHandler(IRepository<Ingredient> repository, IMapper mapper, IEventBus eventBus)
+        public UpdateIngredientCommandHandler(IGenericEfRepository<Ingredient> repository, IMapper mapper, IEventBus eventBus)
         {
             _repository = repository;
             _mapper = mapper;

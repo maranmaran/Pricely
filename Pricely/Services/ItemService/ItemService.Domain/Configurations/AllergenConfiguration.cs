@@ -1,4 +1,5 @@
-﻿using ItemService.Domain.Entities;
+﻿using DataAccess.Sql.Entities;
+using ItemService.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItemService.Domain.Configurations

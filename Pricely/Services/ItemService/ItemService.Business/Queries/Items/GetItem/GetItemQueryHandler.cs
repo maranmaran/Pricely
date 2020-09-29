@@ -1,20 +1,20 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using DataAccess.Sql.Interfaces;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
-using ItemService.Persistence.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Queries.Items.GetItem
 {
     internal class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto>
     {
-        private readonly IRepository<Item> _repository;
+        private readonly IGenericEfRepository<Item> _repository;
         private readonly IMapper _mapper;
 
-        public GetItemQueryHandler(IRepository<Item> repository, IMapper mapper)
+        public GetItemQueryHandler(IGenericEfRepository<Item> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

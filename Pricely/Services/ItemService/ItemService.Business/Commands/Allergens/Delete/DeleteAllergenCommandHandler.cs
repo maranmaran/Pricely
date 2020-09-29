@@ -1,20 +1,20 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Exceptions;
+﻿using Common.Exceptions;
+using DataAccess.Sql.Interfaces;
 using EventBus.Infrastructure.Interfaces;
 using ItemService.Domain.Entities;
-using ItemService.Persistence.Interfaces;
 using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemService.Business.Commands.Allergens.Delete
 {
     internal class DeleteAllergenCommandHandler : IRequestHandler<DeleteAllergenCommand, Unit>
     {
-        private readonly IRepository<Allergen> _repository;
+        private readonly IGenericEfRepository<Allergen> _repository;
         private readonly IEventBus _eventBus;
 
-        public DeleteAllergenCommandHandler(IRepository<Allergen> repository, IEventBus eventBus)
+        public DeleteAllergenCommandHandler(IGenericEfRepository<Allergen> repository, IEventBus eventBus)
         {
             _repository = repository;
             _eventBus = eventBus;

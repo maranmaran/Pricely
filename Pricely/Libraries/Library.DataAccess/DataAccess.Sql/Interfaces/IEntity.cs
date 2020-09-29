@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ItemService.Domain.Interfaces
+namespace DataAccess.Sql.Interfaces
 {
     public interface IEntity
     {

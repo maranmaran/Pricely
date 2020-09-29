@@ -1,6 +1,6 @@
-﻿using ItemService.Domain;
-using ItemService.Persistence.Interfaces;
-using ItemService.Persistence.Repositories;
+﻿using DataAccess.Sql;
+using DataAccess.Sql.Interfaces;
+using ItemService.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +17,7 @@ namespace ItemService.Persistence
             services.AddSingleton(x => x.GetService<IOptions<DatabaseSettings>>().Value);
 
             // Add database
-            services.AddDbContext<ApplicationDbContext>(o =>
+            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(o =>
             {
                 o.UseSqlServer(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
                 o.EnableSensitiveDataLogging();
@@ -25,11 +25,7 @@ namespace ItemService.Persistence
                 o.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
-            // Configure context for DI
-            services.AddTransient<ApplicationDbContext>();
-
-            // add repositories to DI
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.ConfigureEfSqlDataAccess();
             //services.AddTransient<IPokemonRepository, PokemonRepository>();
         }
 
