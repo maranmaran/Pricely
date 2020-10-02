@@ -23,9 +23,6 @@ namespace Common.Models
             TotalPages = (int)Math.Ceiling(totalItems / (decimal)pageSize);
             HasNext = currentPage < TotalPages;
             HasPrevious = currentPage <= 1;
-
-            if (currentPage < 1 || currentPage > TotalPages)
-                throw new ArgumentException($"Invalid {nameof(currentPage)} value of {currentPage}");
         }
     }
 }
