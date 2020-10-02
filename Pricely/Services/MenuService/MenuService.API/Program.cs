@@ -64,7 +64,7 @@ namespace MenuService.API
         {
             logger.LogInformation("Migrating DB");
 
-            DbSeeder.SeedAsync(services).Wait();
+            DbSeeder.SeedAsync(services);
 
             logger.LogInformation("Finished migrating DB");
         }

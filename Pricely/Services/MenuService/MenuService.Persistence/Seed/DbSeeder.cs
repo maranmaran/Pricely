@@ -1,26 +1,24 @@
 ﻿using DataAccess.NoSql.Interfaces;
 using MenuService.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MenuService.Persistence.Seed
 {
     public class DbSeeder
     {
-        public static async Task SeedAsync(IServiceProvider services)
+        public static void SeedAsync(IServiceProvider services)
         {
             var logger = services.GetService<ILogger<DbSeeder>>();
             var menuContext = services.GetService<IGenericDocumentRepository<Menu>>();
 
             try
             {
-                await SeedMenus(menuContext, logger);
+                SeedMenus(menuContext, logger);
             }
             catch (Exception e)
             {
@@ -29,9 +27,9 @@ namespace MenuService.Persistence.Seed
             }
         }
 
-        static async Task SeedMenus(IGenericDocumentRepository<Menu> context, ILogger<DbSeeder> logger)
+        static void SeedMenus(IGenericDocumentRepository<Menu> context, ILogger<DbSeeder> logger)
         {
-            var data = await context.AsQueryable().ToListAsync();
+            var data = context.AsQueryable().ToList();
             var hasData = data.Any();
 
             if (hasData)
@@ -62,7 +60,7 @@ namespace MenuService.Persistence.Seed
                 }
             };
 
-            await context.InsertManyAsync(menus);
+            context.InsertManyAsync(menus).Wait();
         }
     }
 }
