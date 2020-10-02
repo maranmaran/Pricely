@@ -71,8 +71,8 @@ services:
         env_file: .env
         environment:
             - ASPNETCORE_ENVIRONMENT=${PRICELY_ENVIRONMENT_DEV}
-            - DatabaseSettings__ConnectionString=${PRICELY_MENU_DB}
-            - DatabaseSettings__Database=menu-service
+            - MongoDatabaseSettings__ConnectionString=${PRICELY_MENU_DB}
+            - MongoDatabaseSettings__Database=menu-service
             - EventBus__Host=${PRICELY_EVENT_BUS_HOST}
             - EventBus__Port=${PRICELY_EVENT_BUS_PORT}
             - EventBus__Username=${PRICELY_EVENT_BUS_USERNAME}
