@@ -1,4 +1,4 @@
-﻿using DataAccess.Sql.Entities;
+﻿using DataAccess.Sql.Models;
 using ItemService.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

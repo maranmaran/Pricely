@@ -1,5 +1,5 @@
-﻿using DataAccess.Sql.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DataAccess.Sql.Models;
 
 namespace ItemService.Persistence.DTOModels
 {

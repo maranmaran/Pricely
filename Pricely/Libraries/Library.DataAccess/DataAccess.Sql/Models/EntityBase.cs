@@ -1,7 +1,7 @@
 ﻿using System;
 using DataAccess.Sql.Interfaces;
 
-namespace DataAccess.Sql.Entities
+namespace DataAccess.Sql.Models
 {
     public abstract class EntityBase : IEntity
     {

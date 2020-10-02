@@ -1,4 +1,5 @@
-﻿using ItemService.Business.Commands.Items.Create;
+﻿using Common.Models;
+using ItemService.Business.Commands.Items.Create;
 using ItemService.Business.Commands.Items.Delete;
 using ItemService.Business.Commands.Items.Update;
 using ItemService.Business.Queries.Items.GetItem;
@@ -33,10 +34,16 @@ namespace ItemService.API.Controllers
         /// Retrieves all items if no query parameters are specified
         /// </remarks>
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] PagingQueryParams pagingParams,
+            [FromQuery] SortingQueryParams sortingParams,
+            [FromQuery] FilterQueryParams filteringParams,
+            CancellationToken cancellationToken = default)
         {
-            return Ok(await Mediator.Send(new GetItemsQuery(), cancellationToken));
+            return Ok(await Mediator.Send(new GetItemsQuery(pagingParams, sortingParams, filteringParams),
+                cancellationToken));
         }
+
 
         /// <summary>
         /// Creates item

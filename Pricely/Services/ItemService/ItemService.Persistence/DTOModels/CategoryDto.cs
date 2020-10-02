@@ -1,4 +1,4 @@
-﻿using DataAccess.Sql.Entities;
+﻿using DataAccess.Sql.Models;
 
 namespace ItemService.Persistence.DTOModels
 {

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Common
 {
-    public static class ListExtensions
+    public static class CommonExtensions
     {
         /// <summary>
         /// Returns whether or not given collection is empty or null
@@ -13,9 +13,6 @@ namespace Common
             return list == null || !list.Any();
         }
 
-    }
-    public static class HashSetExtensions
-    {
         /// <summary>
         /// Adds range of values to hashset
         /// </summary>
@@ -23,5 +20,12 @@ namespace Common
         {
             return items.Aggregate(true, (current, item) => current & source.Add(item));
         }
+
+        public static string ToPascalCase(this string item)
+        {
+            var normalized = item.ToLowerInvariant();
+            return $"{char.ToUpper(normalized[0])}{normalized[1..normalized.Length]}";
+        }
+
     }
 }

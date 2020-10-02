@@ -3,7 +3,7 @@ using ItemService.Domain.Entities;
 using ItemService.Domain.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using EntityBase = DataAccess.Sql.Entities.EntityBase;
+using EntityBase = DataAccess.Sql.Models.EntityBase;
 
 namespace ItemService.Domain
 {

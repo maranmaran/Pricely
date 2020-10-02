@@ -1,6 +1,6 @@
-﻿using DataAccess.Sql.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DataAccess.Sql.Models;
 
 namespace ItemService.Domain.Entities
 {

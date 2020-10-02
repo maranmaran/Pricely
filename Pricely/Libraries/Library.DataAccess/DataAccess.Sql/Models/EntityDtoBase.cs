@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataAccess.Sql.Entities
+namespace DataAccess.Sql.Models
 {
     public abstract class EntityDtoBase
     {

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Common.Models;
+using DataAccess.Sql.Interfaces;
+using DataAccess.Sql.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccess.Sql.Entities;
-using DataAccess.Sql.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace DataAccess.Sql.Repositories
 {
@@ -25,8 +25,8 @@ namespace DataAccess.Sql.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAll(
             Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -47,18 +47,21 @@ namespace DataAccess.Sql.Repositories
                 entities = entities.Where(filter);
             }
 
-            if (orderBy != null)
+            if (sortBy != null)
             {
-                entities = orderBy(entities);
+                entities = sortBy(entities);
             }
 
             return await entities.ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> Get(
+
+        public async Task<PagedList<TEntity>> GetPaged(
+            int page,
+            int pageSize = 20,
             Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -79,9 +82,47 @@ namespace DataAccess.Sql.Repositories
                 entities = entities.Where(filter);
             }
 
-            if (orderBy != null)
+            if (sortBy != null)
             {
-                entities = orderBy(entities);
+                entities = sortBy(entities);
+            }
+
+            var totalItems = await entities.CountAsync(cancellationToken);
+            var pagedEntities = await entities
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return new PagedList<TEntity>(pagedEntities, totalItems, page, pageSize);
+        }
+
+        public async Task<TEntity> Get(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
+        {
+            var entities = Entities.AsQueryable();
+
+            if (disableTracking)
+            {
+                entities = entities.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                entities = include(entities);
+            }
+
+            if (filter != null)
+            {
+                entities = entities.Where(filter);
+            }
+
+            if (sortBy != null)
+            {
+                entities = sortBy(entities);
             }
 
             return await entities.FirstOrDefaultAsync(cancellationToken);
