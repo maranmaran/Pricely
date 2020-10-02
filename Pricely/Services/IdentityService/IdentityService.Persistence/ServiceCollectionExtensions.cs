@@ -1,7 +1,7 @@
-﻿using IdentityService.Domain;
+﻿using DataAccess.Sql;
+using DataAccess.Sql.Interfaces;
+using IdentityService.Domain;
 using IdentityService.Domain.Entities;
-using IdentityService.Persistence.Interfaces;
-using IdentityService.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +19,7 @@ namespace IdentityService.Persistence
             services.AddSingleton(x => x.GetService<IOptions<DatabaseSettings>>().Value);
 
             // Add database
-            services.AddDbContext<ApplicationDbContext>(o =>
+            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(o =>
             {
                 o.UseSqlServer(configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]);
                 o.EnableSensitiveDataLogging();
@@ -51,7 +51,8 @@ namespace IdentityService.Persistence
             services.AddTransient<ApplicationDbContext>();
 
             // add repositories to DI
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.ConfigureEfSqlDataAccess();
+
             //services.AddTransient<IPokemonRepository, PokemonRepository>();
         }
 

@@ -1,15 +1,15 @@
-﻿using IdentityService.Domain.Entities;
+﻿using DataAccess.Sql.Interfaces;
+using DataAccess.Sql.Models;
+using IdentityService.Domain.Entities;
 using IdentityService.Domain.Seed;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
-using System.IO;
 
 namespace IdentityService.Domain
 {
-    public class ApplicationDbContext : IdentityDbContext<Company, Role, Guid>
+    public class ApplicationDbContext : IdentityDbContext<Company, Role, Guid>, IApplicationDbContext
     {
 
         public DbSet<Company> Companies { get; set; }
@@ -26,47 +26,15 @@ namespace IdentityService.Domain
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
-    }
 
-
-    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
-    {
-
-        public ApplicationDbContext CreateDbContext(string[] args)
+        public new DbSet<TEntity> Set<TEntity>() where TEntity : EntityBase
         {
-            // IDesignTimeDbContextFactory is used usually when you execute EF Core commands like Add-Migration, Update-Database, and so on
-            Console.WriteLine("Which environment you wish to operate with");
-            var environment = (Console.ReadLine())?.ToLower().Trim();
+            return base.Set<TEntity>();
+        }
 
-            if (environment != "development" &&
-                environment != "release" &&
-                environment != "dev" &&
-                environment != "prod")
-            {
-                throw new Exception("Environment can only be Development or Release");
-            }
-
-            if (environment == "dev" || environment == "development")
-                environment = "Development";
-            if (environment == "prod" || environment == "release")
-                environment = "Release";
-
-
-            // Build config
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../IdentityService.API"))
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                .Build();
-
-            var connectionString = config.GetSection("DatabaseSettings")["ConnectionString"];
-
-            // Here we create the DbContextOptionsBuilder manually.        
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer(connectionString);
-
-            // Create our DbContext.
-            return new ApplicationDbContext(builder.Options);
+        public new EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : EntityBase
+        {
+            return base.Update(entity);
         }
     }
 }

@@ -13,6 +13,7 @@ COPY Shared/Common/ Shared/Common/
 COPY Libraries/Library.EventBus/EventBus.Infrastructure/ Libraries/Library.EventBus/EventBus.Infrastructure/
 COPY Libraries/Library.EventBus/EventBus.RabbitMQ/ Libraries/Library.EventBus/EventBus.RabbitMQ/
 COPY Libraries/Library.EventBus/EventBus.Azure/ Libraries/Library.EventBus/EventBus.Azure/
+COPY Libraries/Library.DataAccess/DataAccess.Sql/ Libraries/Library.DataAccess/DataAccess.Sql/
 
 COPY Services/IdentityService/IdentityService.API/ Services/IdentityService/IdentityService.API/
 COPY Services/IdentityService/IdentityService.Business/ Services/IdentityService/IdentityService.Business/
