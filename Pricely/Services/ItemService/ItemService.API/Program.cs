@@ -1,5 +1,5 @@
 using Autofac.Extensions.DependencyInjection;
-using ItemService.Domain;
+using DataAccess.Sql.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +47,7 @@ namespace ItemService.API
         {
             logger.LogInformation("Migrating DB");
 
-            var context = services.GetService<ApplicationDbContext>();
+            var context = services.GetService<IApplicationDbContext>();
             context.Database.Migrate();
 
             logger.LogInformation("Finished migrating DB");
