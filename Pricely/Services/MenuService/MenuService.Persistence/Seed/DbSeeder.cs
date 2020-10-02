@@ -1,4 +1,7 @@
-﻿using MenuService.Domain.Entities;
+﻿using DataAccess.NoSql.Interfaces;
+using MenuService.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
@@ -10,27 +13,14 @@ namespace MenuService.Persistence.Seed
 {
     public class DbSeeder
     {
-        private static ApplicationDbContext _context;
-
-        public static async Task SeedAsync(DatabaseSettings settings, ILoggerFactory logFactory)
+        public static async Task SeedAsync(IServiceProvider services)
         {
-            var logger = logFactory.CreateLogger<DbSeeder>();
-
-            _context = new ApplicationDbContext(settings);
+            var logger = services.GetService<ILogger<DbSeeder>>();
+            var menuContext = services.GetService<IGenericDocumentRepository<Menu>>();
 
             try
             {
-                var data = await _context.Menu.AsQueryable().ToListAsync();
-                var hasData = data.Any();
-                
-                if (hasData == false)
-                {
-                    await SeedMenus();
-                }
-                else
-                {
-                    logger.LogInformation("Data already exists");
-                }
+                await SeedMenus(menuContext, logger);
             }
             catch (Exception e)
             {
@@ -39,8 +29,17 @@ namespace MenuService.Persistence.Seed
             }
         }
 
-        static async Task SeedMenus()
+        static async Task SeedMenus(IGenericDocumentRepository<Menu> context, ILogger<DbSeeder> logger)
         {
+            var data = await context.AsQueryable().ToListAsync();
+            var hasData = data.Any();
+
+            if (hasData)
+            {
+                logger.LogInformation("Data already exists");
+                return;
+            }
+
             var menus = new List<Menu>()
             {
                 new Menu()
@@ -63,7 +62,7 @@ namespace MenuService.Persistence.Seed
                 }
             };
 
-            await _context.Menu.InsertManyAsync(menus);
+            await context.InsertManyAsync(menus);
         }
     }
 }

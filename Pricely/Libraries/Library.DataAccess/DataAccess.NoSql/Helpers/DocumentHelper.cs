@@ -1,13 +1,13 @@
-﻿using System;
+﻿using DataAccess.NoSql.Attributes;
+using System;
 using System.Linq;
-using MenuService.Domain.Attributes;
 
-namespace MenuService.Persistence.Seed
+namespace DataAccess.NoSql.Helpers
 {
-    internal static class DocumentHelper
+    public static class DocumentHelper
     {
 
-        internal static string GetCollectionName(this Type document)
+        public static string GetCollectionName(this Type document)
         {
             return ((BsonCollectionAttribute)document.GetCustomAttributes(
                     typeof(BsonCollectionAttribute),

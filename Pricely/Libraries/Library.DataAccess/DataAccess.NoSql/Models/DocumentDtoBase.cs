@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MenuService.Persistence.DTOModels
+namespace DataAccess.NoSql.Models
 {
     public abstract class DocumentDtoBase
     {

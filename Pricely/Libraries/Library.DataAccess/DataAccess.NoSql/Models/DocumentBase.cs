@@ -1,7 +1,6 @@
-﻿using MenuService.Domain.Interfaces;
-using System;
+﻿using System;
 
-namespace MenuService.Domain.Entities
+namespace DataAccess.NoSql.Models
 {
     public abstract class DocumentBase : IDocument
     {

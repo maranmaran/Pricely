@@ -10,6 +10,7 @@ COPY Shared/Common/ Shared/Common/
 COPY Libraries/Library.EventBus/EventBus.Infrastructure/ Libraries/Library.EventBus/EventBus.Infrastructure/
 COPY Libraries/Library.EventBus/EventBus.RabbitMQ/ Libraries/Library.EventBus/EventBus.RabbitMQ/
 COPY Libraries/Library.EventBus/EventBus.Azure/ Libraries/Library.EventBus/EventBus.Azure/
+COPY Libraries/Library.DataAccess/DataAccess.NoSql/ Libraries/Library.DataAccess/DataAccess.NoSql/
 
 COPY Services/MenuService/MenuService.API/ Services/MenuService/MenuService.API/
 COPY Services/MenuService/MenuService.Business/ Services/MenuService/MenuService.Business/

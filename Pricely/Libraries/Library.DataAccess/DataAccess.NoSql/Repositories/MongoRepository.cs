@@ -1,29 +1,29 @@
-﻿using MenuService.Domain.Interfaces;
-using MenuService.Persistence.Interfaces;
+﻿using DataAccess.NoSql.Helpers;
+using DataAccess.NoSql.Interfaces;
+using DataAccess.NoSql.Models;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using MenuService.Persistence.Seed;
+using MongoDatabaseSettings = DataAccess.NoSql.Settings.MongoDatabaseSettings;
 
-namespace MenuService.Persistence.Repositories
+namespace DataAccess.NoSql.Repositories
 {
-    internal class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDocument : IDocument
+    internal class MongoRepository<TDocument> : IGenericDocumentRepository<TDocument> where TDocument : IDocument
     {
         private protected readonly IMongoCollection<TDocument> Collection;
 
-        public MongoRepository(DatabaseSettings settings)
+        public MongoRepository(MongoDatabaseSettings settings)
         {
             var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.Database);
 
             Collection = database.GetCollection<TDocument>(typeof(TDocument).GetCollectionName());
         }
 
-        public virtual IMongoQueryable<TDocument> AsQueryable()
+        public virtual IQueryable<TDocument> AsQueryable()
         {
             return Collection.AsQueryable();
         }

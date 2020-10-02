@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataAccess.NoSql.Models;
 
 namespace MenuService.Persistence.DTOModels
 {

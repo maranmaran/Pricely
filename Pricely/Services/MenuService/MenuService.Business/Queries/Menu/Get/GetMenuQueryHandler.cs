@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using DataAccess.NoSql.Interfaces;
 using MediatR;
 using MenuService.Persistence.DTOModels;
-using MenuService.Persistence.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,10 +9,10 @@ namespace MenuService.Business.Queries.Menu.Get
 {
     internal class GetMenuQueryHandler : IRequestHandler<GetMenuQuery, MenuDto>
     {
-        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
+        private readonly IGenericDocumentRepository<Domain.Entities.Menu> _repository;
         private readonly IMapper _mapper;
 
-        public GetMenuQueryHandler(IMongoRepository<Domain.Entities.Menu> repository, IMapper mapper)
+        public GetMenuQueryHandler(IGenericDocumentRepository<Domain.Entities.Menu> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

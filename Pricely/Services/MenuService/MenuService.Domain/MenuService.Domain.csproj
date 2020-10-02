@@ -45,4 +45,8 @@
     <PackageReference Include="MongoDB.Driver" Version="2.11.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Library.DataAccess\DataAccess.NoSql\DataAccess.NoSql.csproj" />
+  </ItemGroup>
+
 </Project>

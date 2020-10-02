@@ -1,16 +1,16 @@
-﻿using MenuService.Domain.Interfaces;
-using MongoDB.Driver.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using DataAccess.NoSql.Models;
 
-namespace MenuService.Persistence.Interfaces
+namespace DataAccess.NoSql.Interfaces
 {
-    public interface IMongoRepository<TDocument> where TDocument : IDocument
+    public interface IGenericDocumentRepository<TDocument> where TDocument : IDocument
     {
-        IMongoQueryable<TDocument> AsQueryable();
+        IQueryable<TDocument> AsQueryable();
 
         IEnumerable<TDocument> FilterBy(
             Expression<Func<TDocument, bool>> filterExpression);

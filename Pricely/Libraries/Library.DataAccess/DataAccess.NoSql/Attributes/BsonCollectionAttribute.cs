@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MenuService.Domain.Attributes
+namespace DataAccess.NoSql.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class BsonCollectionAttribute : Attribute

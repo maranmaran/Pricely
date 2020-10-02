@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using DataAccess.NoSql.Interfaces;
 using MediatR;
 using MenuService.Persistence.DTOModels;
-using MenuService.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,10 +12,10 @@ namespace MenuService.Business.Queries.Menu.GetAll
 {
     internal class GetMenusQueryHandler : IRequestHandler<GetMenusQuery, IEnumerable<MenuDto>>
     {
-        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
+        private readonly IGenericDocumentRepository<Domain.Entities.Menu> _repository;
         private readonly IMapper _mapper;
 
-        public GetMenusQueryHandler(IMongoRepository<Domain.Entities.Menu> repository, IMapper mapper)
+        public GetMenusQueryHandler(IGenericDocumentRepository<Domain.Entities.Menu> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

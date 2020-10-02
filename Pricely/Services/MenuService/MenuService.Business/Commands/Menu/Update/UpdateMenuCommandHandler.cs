@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
+using DataAccess.NoSql.Interfaces;
 using MediatR;
-using MenuService.Persistence.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,10 +10,10 @@ namespace MenuService.Business.Commands.Menu.Update
 {
     internal class UpdateMenuCommandHandler : IRequestHandler<UpdateMenuCommand, Unit>
     {
-        private readonly IMongoRepository<Domain.Entities.Menu> _repository;
+        private readonly IGenericDocumentRepository<Domain.Entities.Menu> _repository;
         private readonly IMapper _mapper;
 
-        public UpdateMenuCommandHandler(IMongoRepository<Domain.Entities.Menu> repository, IMapper mapper)
+        public UpdateMenuCommandHandler(IGenericDocumentRepository<Domain.Entities.Menu> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

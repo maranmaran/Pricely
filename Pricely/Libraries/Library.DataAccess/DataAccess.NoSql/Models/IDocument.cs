@@ -1,7 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace MenuService.Domain.Interfaces
+namespace DataAccess.NoSql.Models
 {
     public interface IDocument
     {
