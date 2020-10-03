@@ -64,6 +64,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Sql", "Libraries
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.NoSql", "Libraries\Library.DataAccess\DataAccess.NoSql\DataAccess.NoSql.csproj", "{890920D2-9E86-4F8C-8BCE-17DAA7B82467}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{B4B6FB27-444E-4D21-9B96-5D64B0A4F5D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Web", "Gateways\Gateway.Web\Gateway.Web.csproj", "{2B8B445D-A2D7-445A-A298-5E5AC0D69922}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +154,10 @@ Global
 		{890920D2-9E86-4F8C-8BCE-17DAA7B82467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{890920D2-9E86-4F8C-8BCE-17DAA7B82467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{890920D2-9E86-4F8C-8BCE-17DAA7B82467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B8B445D-A2D7-445A-A298-5E5AC0D69922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B8B445D-A2D7-445A-A298-5E5AC0D69922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B8B445D-A2D7-445A-A298-5E5AC0D69922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B8B445D-A2D7-445A-A298-5E5AC0D69922}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +187,7 @@ Global
 		{0AE2191A-90B2-453F-9A27-5956C8CE9F8F} = {69C6F81C-9366-49CF-8B35-34FA14FCC095}
 		{6080838F-8C1E-4080-B3F9-7B81F6509261} = {0AE2191A-90B2-453F-9A27-5956C8CE9F8F}
 		{890920D2-9E86-4F8C-8BCE-17DAA7B82467} = {0AE2191A-90B2-453F-9A27-5956C8CE9F8F}
+		{2B8B445D-A2D7-445A-A298-5E5AC0D69922} = {B4B6FB27-444E-4D21-9B96-5D64B0A4F5D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CDE77E8-C8E5-4903-B304-B7AABD71030F}
