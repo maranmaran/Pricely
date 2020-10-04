@@ -24,7 +24,7 @@ namespace DataAccess.NoSql.Repositories
             Collection = database.GetCollection<TDocument>(typeof(TDocument).GetCollectionName());
         }
 
-        public virtual IQueryable<TDocument> AsQueryable()
+        public virtual IMongoQueryable<TDocument> AsQueryable()
         {
             return Collection.AsQueryable();
         }

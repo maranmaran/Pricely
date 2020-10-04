@@ -1,16 +1,16 @@
-﻿using System;
+﻿using DataAccess.NoSql.Models;
+using MongoDB.Driver.Linq;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccess.NoSql.Models;
 
 namespace DataAccess.NoSql.Interfaces
 {
     public interface IGenericDocumentRepository<TDocument> where TDocument : IDocument
     {
-        IQueryable<TDocument> AsQueryable();
+        IMongoQueryable<TDocument> AsQueryable();
 
         IEnumerable<TDocument> FilterBy(
             Expression<Func<TDocument, bool>> filterExpression);

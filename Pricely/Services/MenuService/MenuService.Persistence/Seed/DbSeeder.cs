@@ -11,7 +11,7 @@ namespace MenuService.Persistence.Seed
 {
     public class DbSeeder
     {
-        public static void SeedAsync(IServiceProvider services)
+        public static void Seed(IServiceProvider services)
         {
             var logger = services.GetService<ILogger<DbSeeder>>();
             var menuContext = services.GetService<IGenericDocumentRepository<Menu>>();

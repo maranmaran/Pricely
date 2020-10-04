@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MenuService.Domain", "MenuS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MenuService.Persistence", "MenuService.Persistence\MenuService.Persistence.csproj", "{12F927ED-B938-4A43-BB97-D5BBB1285F9E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{ABEFE196-3B7A-4F4A-B221-AE77D451CAEA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.MenuService.Functional", "Tests\Tests.MenuService.Functional\Tests.MenuService.Functional.csproj", "{094A60AE-9DC2-4EBB-A010-5E76CA53AE9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{12F927ED-B938-4A43-BB97-D5BBB1285F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F927ED-B938-4A43-BB97-D5BBB1285F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F927ED-B938-4A43-BB97-D5BBB1285F9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{094A60AE-9DC2-4EBB-A010-5E76CA53AE9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{094A60AE-9DC2-4EBB-A010-5E76CA53AE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{094A60AE-9DC2-4EBB-A010-5E76CA53AE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{094A60AE-9DC2-4EBB-A010-5E76CA53AE9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{094A60AE-9DC2-4EBB-A010-5E76CA53AE9D} = {ABEFE196-3B7A-4F4A-B221-AE77D451CAEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C0A411E-A789-44DF-8633-1C487184DFB8}
