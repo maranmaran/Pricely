@@ -11,9 +11,9 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'eafc666b-b1c5-4a8b-8639-696743aecb4d'
-  imageRepository: 'menuservice'
+  imageRepository: 'itemservice'
   containerRegistry: 'pricely.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Pricely/Services/MenuService/MenuService.API/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/Pricely/Services/ItemService/ItemService.API/Dockerfile'
   tag: '$(Build.BuildId)'
   
   # Agent VM image name
@@ -33,8 +33,8 @@ stages:
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
         buildContext: $(Build.SourcesDirectory)/Pricely
+        dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
