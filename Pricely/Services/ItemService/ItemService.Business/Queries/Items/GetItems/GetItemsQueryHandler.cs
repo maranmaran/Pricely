@@ -82,24 +82,43 @@ namespace ItemService.Business.Queries.Items.GetItems
         /// <summary>
         /// Builds and retrieves Item filter function
         /// </summary>
-        /// <param name="searchTerm">Describes search term for name, description or category name for item</param>
+        /// <param name="parameters">Describes search term for name, description or category name for item</param>
         /// <returns>Expression which is used in LINQ to SQL on database level for filtering</returns>
         internal Expression<Func<Item, bool>> GetFilterFn(FilterQueryParams parameters)
         {
             if (string.IsNullOrWhiteSpace(parameters.SearchTerm))
                 return null;
 
-            var searchTerm = parameters.SearchTerm.Trim().ToLower(); // normalize
+            // normalize search term
+            var searchTerm = parameters.SearchTerm.Trim().ToLower();
 
-            // define conditions
-            Func<Item, bool> nameMatch = item => item.Name == searchTerm;
-            Func<Item, bool> descriptionMatch = item => item.Description == searchTerm;
-            Func<Item, bool> categoryMatch = item => item.Category.Name == searchTerm;
+            // define expression input item => item....
+            var input = Expression.Parameter(typeof(Item));
 
-            // return expression tree
-            return item => item.Name.Trim().ToLower().Contains(searchTerm) ||
-                           item.Description.Trim().ToLower().Contains(searchTerm) ||
-                           item.Category.Name.Trim().ToLower().Contains(searchTerm);
+            // create expression constant to be used
+            var searchTermConstant = Expression.Constant(searchTerm);
+
+            // define all conditions 
+
+            Expression<Func<Item, string, bool>> nameMatchDelegate = (item, value) => !string.IsNullOrWhiteSpace(item.Name) && item.Name.Trim().ToLower().Contains(value);
+            var nameMatchInvoke = Expression.Invoke(nameMatchDelegate, input, searchTermConstant);
+
+            Expression<Func<Item, string, bool>> descriptionMatchDelegate = (item, value) => !string.IsNullOrWhiteSpace(item.Description) && item.Description.Trim().ToLower().Contains(value);
+            var descriptionMatchInvoke = Expression.Invoke(descriptionMatchDelegate, input, searchTermConstant);
+
+            Expression<Func<Item, string, bool>> categoryMatchDelegate = (item, value) => item.Category != null && !string.IsNullOrWhiteSpace(item.Category.Name) && item.Category.Name.Trim().ToLower().Contains(value);
+            var categoryMatchInvoke = Expression.Invoke(categoryMatchDelegate, input, searchTermConstant);
+
+            var conditions = new List<Expression> { nameMatchInvoke, descriptionMatchInvoke, categoryMatchInvoke };
+
+            // item => nameMatch(item) || descriptionMatch(item) || categoryMatch(item)
+            var body = conditions
+                .Skip(1)
+                .Aggregate(
+                    seed: conditions.FirstOrDefault(),
+                    func: Expression.Or);
+
+            return Expression.Lambda<Func<Item, bool>>(body, input);
         }
     }
 
