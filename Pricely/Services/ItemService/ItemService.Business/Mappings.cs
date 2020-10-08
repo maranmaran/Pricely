@@ -19,6 +19,7 @@ namespace ItemService.Business
                 .ReverseMap()
 
                 // Ignore category virtual member.. if it has guid it will be mapped correctly in DB
+                //.ForMember(x => x.CategoryId, o => o.MapFrom(x => x.Category.Id))
                 .ForMember(x => x.Category, o => o.Ignore())
 
                 // special handling for ingredients because they have many2many join entity
@@ -29,10 +30,10 @@ namespace ItemService.Business
                             .Select(a => new ItemIngredient
                             {
 
-                                ItemId = p.Id,
+                                //ItemId = p.Id,
                                 IngredientId = a.Id,
                                 // Ignore because this will introduce issues and try to insert new item
-                                // ID on JOIN entity is enought
+                                // ID on JOIN entity is enough
                                 //Ingredient = new Ingredient()
                                 //{
                                 //    Id = a.Id,
@@ -50,7 +51,7 @@ namespace ItemService.Business
                         .Select(a => new ItemAllergen()
                         {
 
-                            ItemId = p.Id,
+                            //ItemId = p.Id,
                             AllergenId = a.Id,
                             //Allergen = new Allergen()
                             //{

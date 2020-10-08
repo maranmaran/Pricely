@@ -8,9 +8,25 @@ namespace ItemService.Business.Commands.Items.Update
         public UpdateItemCommandValidator()
         {
             RuleFor(x => x.Item).SetValidator(new ItemValidator());
-            RuleFor(x => x.Item.Category).SetValidator(new CategoryValidator());
-            RuleForEach(x => x.Item.Ingredients).SetValidator(new IngredientValidator());
-            RuleForEach(x => x.Item.Allergens).SetValidator(new AllergenValidator());
+
+            // for update only validating properly assigned IDs is important.. as they are the only thing getting mapped
+            // we can't update their own properties (Category, Ingredients and Allergens) in ItemUpdateCommand..
+            // we have their own controllers for that
+            RuleFor(x => x.Item.Category.Id).NotEmpty();
+
+            RuleForEach(x => x.Item.Ingredients)
+                .ChildRules(validator =>
+                    {
+                        validator.RuleFor(x => x.Id).NotEmpty();
+                    }
+                );
+
+            RuleForEach(x => x.Item.Allergens)
+                .ChildRules(validator =>
+                {
+                    validator.RuleFor(x => x.Id).NotEmpty();
+                }
+            ); ;
         }
     }
 }
