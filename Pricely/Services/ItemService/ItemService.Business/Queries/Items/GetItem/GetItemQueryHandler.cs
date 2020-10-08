@@ -11,10 +11,10 @@ namespace ItemService.Business.Queries.Items.GetItem
 {
     internal class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto>
     {
-        private readonly IGenericEfRepository<Item> _repository;
+        private readonly IGenericEfRepository<Item, ItemDto> _repository;
         private readonly IMapper _mapper;
 
-        public GetItemQueryHandler(IGenericEfRepository<Item> repository, IMapper mapper)
+        public GetItemQueryHandler(IGenericEfRepository<Item, ItemDto> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -22,7 +22,7 @@ namespace ItemService.Business.Queries.Items.GetItem
 
         public async Task<ItemDto> Handle(GetItemQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _repository.Get(
+            var entity = await _repository.Get(
                 filter: source => source.Id == request.Id,
                 include: source => source
                     .Include(x => x.Ingredients)
@@ -33,7 +33,7 @@ namespace ItemService.Business.Queries.Items.GetItem
                 cancellationToken: cancellationToken
             );
 
-            return _mapper.Map<ItemDto>(entities);
+            return entity;
         }
     }
 }

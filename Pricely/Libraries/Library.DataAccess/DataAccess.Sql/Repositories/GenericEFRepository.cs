@@ -1,7 +1,10 @@
-﻿using Common.Models;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Common.Models;
 using DataAccess.Sql.Interfaces;
 using DataAccess.Sql.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +25,10 @@ namespace DataAccess.Sql.Repositories
             Entities = _context.Set<TEntity>();
         }
 
-
         public async Task<IEnumerable<TEntity>> GetAll(
             Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> sortBy = null,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -55,13 +57,12 @@ namespace DataAccess.Sql.Repositories
             return await entities.ToListAsync(cancellationToken);
         }
 
-
         public async Task<PagedList<TEntity>> GetPaged(
             int page,
             int pageSize = 20,
             Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> sortBy = null,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -98,8 +99,8 @@ namespace DataAccess.Sql.Repositories
 
         public async Task<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> sortBy = null,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -159,6 +160,124 @@ namespace DataAccess.Sql.Repositories
             Entities.Remove(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    internal class GenericEfRepository<TEntity, TProjection>
+        : GenericEfRepository<TEntity>, IGenericEfRepository<TEntity, TProjection>
+        where TEntity : EntityBase
+        where TProjection : EntityDtoBase
+    {
+        private readonly IMapper _mapper;
+
+        public GenericEfRepository(IApplicationDbContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
+        }
+
+        public new async Task<IEnumerable<TProjection>> GetAll(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
+        {
+            var entities = Entities.AsQueryable();
+
+            if (disableTracking)
+            {
+                entities = entities.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                entities = include(entities);
+            }
+
+            if (filter != null)
+            {
+                entities = entities.Where(filter);
+            }
+
+            if (sortBy != null)
+            {
+                entities = sortBy(entities);
+            }
+
+            return await entities.ProjectTo<TProjection>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+        }
+
+        public new async Task<PagedList<TProjection>> GetPaged(
+            int page,
+            int pageSize = 20,
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
+        {
+            var entities = Entities.AsQueryable();
+
+            if (disableTracking)
+            {
+                entities = entities.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                entities = include(entities);
+            }
+
+            if (filter != null)
+            {
+                entities = entities.Where(filter);
+            }
+
+            if (sortBy != null)
+            {
+                entities = sortBy(entities);
+            }
+
+            var totalItems = await entities.CountAsync(cancellationToken);
+            var pagedEntities = await entities
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ProjectTo<TProjection>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
+
+            return new PagedList<TProjection>(pagedEntities, totalItems, page, pageSize);
+        }
+
+        public new async Task<TProjection> Get(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> sortBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
+        {
+            var entities = Entities.AsQueryable();
+
+            if (disableTracking)
+            {
+                entities = entities.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                entities = include(entities);
+            }
+
+            if (filter != null)
+            {
+                entities = entities.Where(filter);
+            }
+
+            if (sortBy != null)
+            {
+                entities = sortBy(entities);
+            }
+
+            return await entities.ProjectTo<TProjection>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

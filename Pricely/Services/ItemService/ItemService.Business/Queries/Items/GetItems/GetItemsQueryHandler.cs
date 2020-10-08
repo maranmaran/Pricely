@@ -6,6 +6,7 @@ using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,11 @@ namespace ItemService.Business.Queries.Items.GetItems
 {
     internal class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, PagedList<ItemDto>>
     {
-        private readonly IGenericEfRepository<Item> _repository;
+        private readonly IGenericEfRepository<Item, ItemDto> _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<GetItemsQueryHandler> _logger;
 
-        public GetItemsQueryHandler(IGenericEfRepository<Item> repository, IMapper mapper, ILogger<GetItemsQueryHandler> logger)
+        public GetItemsQueryHandler(IGenericEfRepository<Item, ItemDto> repository, IMapper mapper, ILogger<GetItemsQueryHandler> logger)
         {
             _repository = repository;
             _mapper = mapper;
@@ -44,18 +45,14 @@ namespace ItemService.Business.Queries.Items.GetItems
                 cancellationToken: cancellationToken
             );
 
-            return new PagedList<ItemDto>(
-                items: _mapper.Map<IEnumerable<ItemDto>>(pagedEntities.Items),
-                pagedEntities.TotalItems,
-                pagedEntities.CurrentPage,
-                pagedEntities.PageSize);
+            return pagedEntities;
         }
 
         /// <summary>
         /// Builds and retrieves Item include function for extending with navigation props
         /// </summary>
         /// <returns>Function which when executed returns extended input with included navigation props from EF</returns>
-        internal Func<IQueryable<Item>, IQueryable<Item>> GetIncludeFn()
+        internal Func<IQueryable<Item>, IIncludableQueryable<Item, object>> GetIncludeFn()
         {
             return source => source
                 .Include(x => x.Ingredients)
@@ -71,12 +68,12 @@ namespace ItemService.Business.Queries.Items.GetItems
         /// <param name="sortBy">Describes sorting parameter name</param>
         /// <param name="direction">Describes sorting direction</param>
         /// <returns>Function which when executed returns sorted input</returns>
-        internal Func<IQueryable<Item>, IQueryable<Item>> GetSortFn(SortingQueryParams parameters)
+        internal Func<IQueryable<Item>, IOrderedQueryable<Item>> GetSortFn(SortingQueryParams parameters)
         {
             if (string.IsNullOrWhiteSpace(parameters.SortQueryExpression))
                 return null;
 
-            return items => new Sorter<Item>(_logger).Sort(items, parameters.SortQueryExpression);
+            return items => new Sorter<Item>(_logger).Sort(items, parameters.SortQueryExpression) as IOrderedQueryable<Item>;
         }
 
         /// <summary>
