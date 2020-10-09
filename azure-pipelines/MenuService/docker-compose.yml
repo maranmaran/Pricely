@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+
+    mongo:
+        image: mongo
+        ports:
+          - "27017:27017" 
+
+    rabbitmq:
+        image: rabbitmq:management-alpine
+        hostname: rabbitmq
+        ports:
+            - "15672:15672"  
+            - "5672:5672"  
+            - "5671:5671"  
