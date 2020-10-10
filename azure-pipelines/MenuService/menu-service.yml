@@ -11,6 +11,7 @@ resources:
 variables:
   
   serviceDirectory: '$(Build.SourcesDirectory)/Pricely/Services/MenuService'
+  coverageReportDir: '$(Build.SourcesDirectory)/$(appProjectDir)/coverlet/reports'
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '14f69e38-686a-4a6c-9528-90e3c2d1c75d'
@@ -54,7 +55,7 @@ stages:
       - task: NuGetCommand@2
         displayName: Restore NuGet packages
         inputs:
-          restoreSolution: $(Build.SourcesDirectory)/Pricely/Pricely.sln
+          restoreSolution:  $(serviceDirectory)/MenuService.API/MenuService.API.csproj
           includeNuGetOrg: true
       
       # Build app
@@ -72,6 +73,13 @@ stages:
           command: test
           projects: '$(serviceDirectory)/Tests/**/*.csproj'
           arguments: '-c Release --collect:"XPlat Code Coverage"'
+
+      # Publish coverage
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage'
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(coverageReportDir)/Cobertura.xml
 
 # Builds container image and pushes it to container registry
 - stage: Deploy
