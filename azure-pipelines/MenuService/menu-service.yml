@@ -75,6 +75,9 @@ stages:
           arguments: '-c Release --collect:"XPlat Code Coverage"'
 
       # Publish coverage
+      - script: ./reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(coverageReportDir) -reporttypes:"Cobertura"
+        displayName: Create coverage reports
+
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage'
         inputs:
@@ -96,5 +99,4 @@ stages:
         buildContext: $(Build.SourcesDirectory)/Pricely
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        tags: latest | $(tag)
