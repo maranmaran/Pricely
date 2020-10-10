@@ -13,9 +13,9 @@ variables:
   serviceDirectory: '$(Build.SourcesDirectory)/Pricely/Services/MenuService'
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'eafc666b-b1c5-4a8b-8639-696743aecb4d'
-  containerRegistry: 'pricely.azurecr.io'
+  dockerRegistryServiceConnection: '14f69e38-686a-4a6c-9528-90e3c2d1c75d'
   imageRepository: 'menuservice'
+  containerRegistry: 'pricelydev.azurecr.io'
   tag: '$(Build.BuildId)'
 
   # service docker file and docker compose for testing env
