@@ -30,7 +30,7 @@ stages:
 # Builds app and runs all tests
 - stage: Test
   jobs:  
-  - job: Build and run tests
+  - job: 
     pool:
       vmImage: $(vmImageName)
     steps:
@@ -76,7 +76,7 @@ stages:
 # Builds container image and pushes it to container registry
 - stage: Deploy
   jobs:  
-  - job: Build and push image to ACR
+  - job:
     pool:
       vmImage: $(vmImageName)
     steps:
