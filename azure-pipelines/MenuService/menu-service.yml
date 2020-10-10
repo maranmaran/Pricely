@@ -55,7 +55,7 @@ stages:
       - task: NuGetCommand@2
         displayName: Restore NuGet packages
         inputs:
-          restoreSolution:  $(serviceDirectory)/MenuService.API/MenuService.API.csproj
+          restoreSolution: $(Build.SourcesDirectory)/Pricely/Pricely.sln
           includeNuGetOrg: true
       
       # Build app
