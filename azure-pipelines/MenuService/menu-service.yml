@@ -11,7 +11,7 @@ resources:
 variables:
   
   serviceDirectory: '$(Build.SourcesDirectory)/Pricely/Services/MenuService'
-  coverageReportDir: '$(Build.SourcesDirectory)/$(appProjectDir)/coverlet/reports'
+  coverageReportDir: '$(Build.SourcesDirectory)/$(serviceDirectory)/coverlet/reports'
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '14f69e38-686a-4a6c-9528-90e3c2d1c75d'
