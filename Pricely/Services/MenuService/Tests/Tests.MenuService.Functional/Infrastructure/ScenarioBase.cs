@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Driver;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using MongoDatabaseSettings = DataAccess.NoSql.Settings.MongoDatabaseSettings;
 
 namespace Tests.MenuService.Functional.Infrastructure
 {
@@ -31,9 +34,10 @@ namespace Tests.MenuService.Functional.Infrastructure
                     // configure test web host which will be used to create test server
                     webHostBuilder
                         .UseContentRoot(Path.GetDirectoryName(path))
-                        .ConfigureAppConfiguration(cb =>
+                        .ConfigureAppConfiguration(config =>
                         {
-                            cb.AddJsonFile("appsettings.json", optional: false)
+                            config
+                                .AddJsonFile("appsettings.json")
                                 .AddEnvironmentVariables();
                         })
                         .UseStartup<TestStartup>()
@@ -44,14 +48,39 @@ namespace Tests.MenuService.Functional.Infrastructure
 
             // setup stuff
             // db migrations etc..
+            // ReSharper disable once ConvertToUsingDeclaration
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
 
-                DbSeeder.Seed(services);
+                ReseedDatabase(services);
             }
 
             return host;
+        }
+
+        /// <summary>
+        /// Ensures db is deleted and recreated / seeded
+        /// </summary>
+        /// <param name="services"></param>
+        private void ReseedDatabase(IServiceProvider services)
+        {
+            var configuration = services.GetService<IConfiguration>();
+
+            var connString =
+                configuration.GetValue<string>(
+                    $"{nameof(MongoDatabaseSettings)}:{nameof(MongoDatabaseSettings.ConnectionString)}");
+
+            var client = new MongoClient(connString);
+
+            var databaseName =
+                configuration.GetValue<string>(
+                    $"{nameof(MongoDatabaseSettings)}:{nameof(MongoDatabaseSettings.Database)}");
+
+            // ReSharper disable once MethodHasAsyncOverload
+            client.DropDatabase(databaseName);
+
+            DbSeeder.Seed(services);
         }
     }
 }

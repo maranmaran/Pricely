@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventBus.Azure;
 using EventBus.RabbitMQ;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -17,7 +18,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using EventBus.Azure;
 
 namespace MenuService.API
 {

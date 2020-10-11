@@ -24,22 +24,29 @@ namespace DataAccess.NoSql.Repositories
             Collection = database.GetCollection<TDocument>(typeof(TDocument).GetCollectionName());
         }
 
-        public virtual IMongoQueryable<TDocument> AsQueryable()
+        public IQueryable<TDocument> AsQueryable()
         {
             return Collection.AsQueryable();
         }
 
-        public virtual IEnumerable<TDocument> FilterBy(
-            Expression<Func<TDocument, bool>> filterExpression)
+        public async Task<IEnumerable<TDocument>> GetAll(CancellationToken cancellationToken = default)
         {
-            return Collection.Find(filterExpression).ToEnumerable();
+            return await Collection.AsQueryable().ToListAsync(cancellationToken);
         }
 
-        public virtual IEnumerable<TProjected> FilterBy<TProjected>(
+        public async Task<IEnumerable<TDocument>> FilterBy(
             Expression<Func<TDocument, bool>> filterExpression,
-            Expression<Func<TDocument, TProjected>> projectionExpression)
+            CancellationToken cancellationToken = default)
         {
-            return Collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
+            return await Collection.Find(filterExpression).ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<TProjected>> FilterBy<TProjected>(
+            Expression<Func<TDocument, bool>> filterExpression,
+            Expression<Func<TDocument, TProjected>> projectionExpression,
+            CancellationToken cancellationToken = default)
+        {
+            return await Collection.Find(filterExpression).Project(projectionExpression).ToListAsync(cancellationToken);
         }
 
 
@@ -124,7 +131,7 @@ namespace DataAccess.NoSql.Repositories
         {
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
 
-            await Collection.UpdateOneAsync(filter, new ObjectUpdateDefinition<TDocument>(document), new UpdateOptions() { }, cancellationToken);
+            await Collection.FindOneAndUpdateAsync(filter, new ObjectUpdateDefinition<TDocument>(document), new FindOneAndUpdateOptions<TDocument>() { }, cancellationToken);
         }
 
         public async Task UpdateManyAsync(ICollection<TDocument> documents, CancellationToken cancellationToken = default)

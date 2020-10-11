@@ -10,7 +10,7 @@ using System.Net.Sockets;
 
 namespace EventBus.RabbitMQ
 {
-    public class DefaultPersistentConnection : IPersistentConnection
+    public class DefaultPersistentConnection : IPersistentConnection, IDisposable
     {
         private readonly ILogger<DefaultPersistentConnection> _logger;
         private readonly IConnectionFactory _connectionFactory;
