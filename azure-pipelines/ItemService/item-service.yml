@@ -1,0 +1,111 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  
+  serviceDirectory: '$(Build.SourcesDirectory)/Pricely/Services/ItemService'
+  coverageReportDir: '$(Build.SourcesDirectory)/$(serviceDirectory)/coverlet/reports'
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '14f69e38-686a-4a6c-9528-90e3c2d1c75d'
+  imageRepository: 'itemservice'
+  containerRegistry: 'pricelydev.azurecr.io'
+  tag: '$(Build.BuildId)'
+
+  # service docker file and docker compose for testing env
+  dockerfilePath: '$(Build.SourcesDirectory)/Pricely/Services/ItemService/ItemService.API/Dockerfile'
+  dockerComposePath: '$(Build.SourcesDirectory)/azure-pipelines/ItemService/docker-compose.yml'
+  
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+
+# Builds app and runs all tests
+- stage: Test
+  jobs:  
+  - job: 
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+
+      # Start all services needed for integration tests
+      - task: DockerCompose@0
+        displayName: Start dependencies (docker-compose)
+        inputs:
+          containerregistrytype: Container Registry
+          dockerComposeFile: $(dockerComposePath)
+          dockerComposeCommand: 'up -d'
+
+      # Install .net SDK
+      - task: UseDotNet@2
+        displayName: Installing .NET SDK
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      # Restore dependancies
+      - task: NuGetCommand@2
+        displayName: Restore NuGet packages
+        inputs:
+          restoreSolution: $(Build.SourcesDirectory)/Pricely/Pricely.sln
+          includeNuGetOrg: true
+      
+      # Build app
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          command: build
+          projects: $(serviceDirectory)/ItemService.API/ItemService.API.csproj
+          arguments: '-c Release --no-restore'
+
+      # Run tests
+      - task: DotNetCoreCLI@2
+        displayName: Integration tests
+        inputs:
+          command: test
+          projects: '$(serviceDirectory)/Tests/**/*.csproj'
+          arguments: '-c Release --collect:"XPlat Code Coverage"'
+
+      # Publish coverage
+      - task: DotNetCoreCLI@2
+        displayName: Install ReportGenerator tool
+        inputs:
+          command: custom
+          custom: tool
+          arguments: install --tool-path . dotnet-reportgenerator-globaltool --ignore-failed-sources
+          
+      - script: ./reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(coverageReportDir) -reporttypes:"Cobertura"
+        displayName: Create coverage reports
+
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage'
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(coverageReportDir)/Cobertura.xml
+
+# Builds container image and pushes it to container registry
+- stage: Deploy
+  jobs:  
+  - job:
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        buildContext: $(Build.SourcesDirectory)/Pricely
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: | 
+          $(tag)
+          latest
