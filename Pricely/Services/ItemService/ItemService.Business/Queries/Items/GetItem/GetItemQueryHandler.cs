@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Exceptions;
 using DataAccess.Sql.Interfaces;
 using ItemService.Domain.Entities;
 using ItemService.Persistence.DTOModels;
@@ -33,6 +34,8 @@ namespace ItemService.Business.Queries.Items.GetItem
                 cancellationToken: cancellationToken
             );
 
+            if (entity == null)
+                throw new NotFoundException(nameof(Item), $"Could not find entity with id: {request.Id}");
             return entity;
         }
     }

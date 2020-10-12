@@ -21,7 +21,7 @@ namespace IdentityService.Persistence
             // Add database
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(o =>
             {
-                o.UseSqlServer(configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]);
+                o.UseSqlServer(configuration.GetValue<string>($"{nameof(DatabaseSettings)}:{nameof(DatabaseSettings.ConnectionString)}"));
                 o.EnableSensitiveDataLogging();
                 o.EnableDetailedErrors();
             });

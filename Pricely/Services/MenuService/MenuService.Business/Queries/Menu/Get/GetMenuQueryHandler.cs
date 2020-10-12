@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Exceptions;
 using DataAccess.NoSql.Interfaces;
 using MediatR;
 using MenuService.Persistence.DTOModels;
@@ -20,9 +21,12 @@ namespace MenuService.Business.Queries.Menu.Get
 
         public async Task<MenuDto> Handle(GetMenuQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _repository.FindByIdAsync(request.Id, cancellationToken);
+            var entity = await _repository.FindByIdAsync(request.Id, cancellationToken);
 
-            return _mapper.Map<MenuDto>(entities);
+            if (entity == null)
+                throw new NotFoundException(nameof(Menu), $"No menu found with id: {request.Id}");
+
+            return _mapper.Map<MenuDto>(entity);
         }
     }
 }

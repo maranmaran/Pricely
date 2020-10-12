@@ -26,12 +26,6 @@ RUN dotnet build --no-restore -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish --no-restore -c Release -o /app/publish
 
-#FROM build as unittest
-#WORKDIR /Services/MenuService/MenuService.UnitTests
-
-#FROM build as functionaltest
-#WORKDIR /Services/MenuService/MenuService.FunctionalTests
-
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

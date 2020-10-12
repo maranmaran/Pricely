@@ -46,12 +46,14 @@ namespace MenuService.API.Middleware
 
             if (exception is NotFoundException notFoundEx)
             {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 errorDetails.Status = HttpStatusCode.NotFound;
                 errorDetails.Message = notFoundEx.Message;
             }
 
             if (exception is ValidationException validationEx)
             {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 errorDetails.Status = HttpStatusCode.BadRequest;
                 errorDetails.Message = validationEx.Message;
                 errorDetails.Errors = validationEx.Errors;

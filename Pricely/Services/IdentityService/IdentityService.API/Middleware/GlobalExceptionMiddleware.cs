@@ -47,12 +47,14 @@ namespace IdentityService.API.Middleware
 
             if (exception is NotFoundException notFoundEx)
             {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 errorDetails.Status = HttpStatusCode.NotFound;
                 errorDetails.Message = notFoundEx.Message;
             }
 
             if (exception is ValidationException validationEx)
             {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 errorDetails.Status = HttpStatusCode.BadRequest;
                 errorDetails.Message = validationEx.Message;
                 errorDetails.Errors = JsonConvert.SerializeObject(validationEx.Errors);
@@ -60,6 +62,7 @@ namespace IdentityService.API.Middleware
 
             if (exception is UnauthorizedAccessException unauthorizedEx)
             {
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 errorDetails.Status = HttpStatusCode.Unauthorized;
                 errorDetails.Message = unauthorizedEx.Message;
             }
