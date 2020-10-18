@@ -1,3 +1,5 @@
+using ItemService.API.Controllers;
+using ItemService.API.GrpcServices;
 using ItemService.API.Middleware;
 using ItemService.Business;
 using ItemService.Persistence;
@@ -43,6 +45,11 @@ namespace ItemService.API
             NLogBuilder.ConfigureNLog("nlog.config");
 
             //internal libs
+            services.AddGrpc(o =>
+            {
+                o.EnableDetailedErrors = true; // debug mode only
+            });
+
             services.ConfigureEventBus(Configuration);
 
             // system configuration
@@ -76,6 +83,7 @@ namespace ItemService.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<AllergenGrpcService>();
                 endpoints.MapHealthChecks("hc");
                 endpoints.MapControllers();
             });

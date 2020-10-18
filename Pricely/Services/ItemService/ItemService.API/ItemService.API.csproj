@@ -12,7 +12,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\AllergenMessages.proto" />
+    <None Remove="Protos\AllergenService.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.32.0" />
     <PackageReference Include="LazyCache.AspNetCore" Version="2.1.2" />
     <PackageReference Include="NLog" Version="4.7.5" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
@@ -27,9 +37,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Protos\AllergenService.proto" />
+    <Protobuf Include="Protos\AllergenMessages.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\AllergenService.proto" GrpcServices="Server" />
+    
     <Content Update="nlog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    
+    <None Include="appsettings.Development.json" />
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

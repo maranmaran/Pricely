@@ -25,7 +25,6 @@ namespace ItemService.Business.Commands.Allergens.Create
             try
             {
                 var entity = _mapper.Map<Allergen>(request.Allergen);
-                throw new Exception();
                 return await _repository.Insert(entity, cancellationToken);
             }
             catch (Exception e)

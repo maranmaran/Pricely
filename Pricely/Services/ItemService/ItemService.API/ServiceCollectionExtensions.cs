@@ -17,6 +17,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using ItemService.API.GrpcServices;
 
 namespace ItemService.API
 {
@@ -144,6 +145,7 @@ namespace ItemService.API
                 var config = new MapperConfiguration(c =>
                 {
                     c.AddProfile<Business.Mappings>();
+                    c.AddProfile<GrpcMappings>();
                 });
 
                 return config.CreateMapper();
