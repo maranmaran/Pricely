@@ -5,6 +5,11 @@ namespace EventBus.Infrastructure.Extensions
 {
     public static class GenericsExtensions
     {
+        /// <summary>
+        /// Gets the name of the generic type through reflection.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>Type name</returns>
         public static string GetGenericTypeName(this Type type)
         {
             var typeName = string.Empty;
@@ -22,6 +27,11 @@ namespace EventBus.Infrastructure.Extensions
             return typeName;
         }
 
+        /// <summary>
+        /// Gets the name of the generic object through reflection.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <returns>Type name</returns>
         public static string GetGenericTypeName(this object @object)
         {
             return @object.GetType().GetGenericTypeName();

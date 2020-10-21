@@ -13,8 +13,7 @@ namespace EventBus.Azure
     {
         public static void ConfigureAzureEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            var subscriptionClientName = configuration.GetValue<string>("EventBus:SubscriptionClientName");
-
+            // Connection 
             services.AddSingleton<IPersistentConnection>(sp =>
             {
                 var serviceBusConnectionString = configuration.GetValue<string>("EventBus:AzureConnection");
@@ -23,8 +22,11 @@ namespace EventBus.Azure
                 return new DefaultPersistentConnection(serviceBusConnection);
             });
 
+            // Subscription manager
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
+            // Event bus
+            var subscriptionClientName = configuration.GetValue<string>("EventBus:SubscriptionClientName");
             services.AddSingleton<IEventBus, EventBus>(sp =>
             {
                 var persistentConnection = sp.GetRequiredService<IPersistentConnection>();

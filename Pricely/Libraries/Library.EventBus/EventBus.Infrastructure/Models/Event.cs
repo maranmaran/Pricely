@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EventBus.Infrastructure.Models
 {
+    /// <summary>
+    /// Event base
+    /// </summary>
     public class Event
     {
         public Event()

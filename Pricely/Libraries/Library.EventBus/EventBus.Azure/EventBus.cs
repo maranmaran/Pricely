@@ -213,13 +213,12 @@ namespace EventBus.Azure
 
         private void RemoveDefaultRule()
         {
-            return;
+            throw new NotImplementedException("Issues with default rule name in prod");
 
-            //TODO - problematic
             try
             {
                 _subscriptionClient
-                 .RemoveRuleAsync(RuleDescription.DefaultRuleName)
+                 .RemoveRuleAsync(RuleDescription.DefaultRuleName) //TODO - problematic
                  .GetAwaiter()
                  .GetResult();
             }

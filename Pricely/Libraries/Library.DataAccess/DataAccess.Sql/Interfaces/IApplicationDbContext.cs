@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Sql.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccess.Sql.Models;
 
 namespace DataAccess.Sql.Interfaces
 {
+    /// <summary>
+    /// SQL Db context abstraction
+    /// </summary>
     public interface IApplicationDbContext
     {
         DatabaseFacade Database { get; }

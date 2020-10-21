@@ -1,5 +1,5 @@
-﻿using System;
-using DataAccess.Sql.Interfaces;
+﻿using DataAccess.Sql.Interfaces;
+using System;
 
 namespace DataAccess.Sql.Models
 {

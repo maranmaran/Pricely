@@ -13,6 +13,12 @@ using MongoDatabaseSettings = DataAccess.NoSql.Settings.MongoDatabaseSettings;
 
 namespace DataAccess.NoSql.Repositories
 {
+    // TODO resolve settings dynamically for different collections
+    /// <summary>
+    /// Mongo db generic repository implementation
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document.</typeparam>
+    /// <seealso cref="IGenericDocumentRepository{TDocument}" />
     internal class MongoRepository<TDocument> : IGenericDocumentRepository<TDocument> where TDocument : IDocument
     {
         private protected readonly IMongoCollection<TDocument> Collection;

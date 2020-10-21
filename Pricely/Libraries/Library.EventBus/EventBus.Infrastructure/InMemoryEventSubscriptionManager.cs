@@ -1,21 +1,27 @@
 ﻿using EventBus.Infrastructure.Interfaces;
 using EventBus.Infrastructure.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace EventBus.Infrastructure
 {
+
+    /// <summary>
+    /// Implements subscription management in memory
+    /// </summary>
+    /// <seealso cref="IEventBusSubscriptionsManager" />
     public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptionsManager
     {
-        private readonly Dictionary<string, List<SubscriptionInfo>> _handlers;
+        private readonly ConcurrentDictionary<string, List<SubscriptionInfo>> _handlers;
         private readonly List<Type> _eventTypes;
 
         public event EventHandler<string> OnEventRemoved;
 
         public InMemoryEventBusSubscriptionsManager()
         {
-            _handlers = new Dictionary<string, List<SubscriptionInfo>>();
+            _handlers = new ConcurrentDictionary<string, List<SubscriptionInfo>>();
             _eventTypes = new List<Type>();
         }
 
@@ -46,7 +52,7 @@ namespace EventBus.Infrastructure
         {
             if (!HasSubscriptionsForEvent(eventName))
             {
-                _handlers.Add(eventName, new List<SubscriptionInfo>());
+                _handlers.TryAdd(eventName, new List<SubscriptionInfo>());
             }
 
             if (_handlers[eventName].Any(s => s.HandlerType == handlerType))
@@ -55,22 +61,17 @@ namespace EventBus.Infrastructure
                     $"Handler Type {handlerType.Name} already registered for '{eventName}'", nameof(handlerType));
             }
 
-            if (isDynamic)
-            {
-                _handlers[eventName].Add(SubscriptionInfo.Dynamic(handlerType));
-            }
-            else
-            {
-                _handlers[eventName].Add(SubscriptionInfo.Typed(handlerType));
-            }
+            _handlers[eventName]
+                .Add(isDynamic ? SubscriptionInfo.Dynamic(handlerType) : SubscriptionInfo.Typed(handlerType));
         }
 
 
         public void RemoveDynamicSubscription<TEventHandler>(string eventName)
             where TEventHandler : IDynamicEventHandler
         {
-            var handlerTEventoRemove = FindDynamicSubscriptionTEventoRemove<TEventHandler>(eventName);
-            DoRemoveHandler(eventName, handlerTEventoRemove);
+            var handlerTRemove = FindDynamicSubscriptionToRemove<TEventHandler>(eventName);
+
+            DoRemoveHandler(eventName, handlerTRemove);
         }
 
 
@@ -78,34 +79,40 @@ namespace EventBus.Infrastructure
             where TEventHandler : IEventHandler<TEvent>
             where TEvent : Event
         {
-            var handlerTEventoRemove = FindSubscriptionTEventoRemove<TEvent, TEventHandler>();
+            var handlerToRemove = FindSubscriptionToRemove<TEvent, TEventHandler>();
             var eventName = GetEventKey<TEvent>();
-            DoRemoveHandler(eventName, handlerTEventoRemove);
+
+            DoRemoveHandler(eventName, handlerToRemove);
         }
 
 
-        private void DoRemoveHandler(string eventName, SubscriptionInfo subsTEventoRemove)
+        private void DoRemoveHandler(string eventName, SubscriptionInfo subsToRemove)
         {
-            if (subsTEventoRemove != null)
-            {
-                _handlers[eventName].Remove(subsTEventoRemove);
-                if (!_handlers[eventName].Any())
-                {
-                    _handlers.Remove(eventName);
-                    var eventType = _eventTypes.SingleOrDefault(e => e.Name == eventName);
-                    if (eventType != null)
-                    {
-                        _eventTypes.Remove(eventType);
-                    }
-                    RaiseOnEventRemoved(eventName);
-                }
+            // validate parameter
+            if (subsToRemove == null)
+                return;
 
+            // validate event handler exists
+            if (_handlers[eventName].Any())
+                return;
+
+            // do remove
+            _handlers[eventName].Remove(subsToRemove);
+
+            // get type and remove it
+            var eventType = _eventTypes.FirstOrDefault(e => e.Name == eventName);
+            if (eventType != null)
+            {
+                _eventTypes.Remove(eventType);
             }
+
+            RaiseOnEventRemoved(eventName);
         }
 
         public IEnumerable<SubscriptionInfo> GetHandlersForEvent<TEvent>() where TEvent : Event
         {
             var key = GetEventKey<TEvent>();
+
             return GetHandlersForEvent(key);
         }
         public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName) => _handlers[eventName];
@@ -113,26 +120,27 @@ namespace EventBus.Infrastructure
         private void RaiseOnEventRemoved(string eventName)
         {
             var handler = OnEventRemoved;
+
             handler?.Invoke(this, eventName);
         }
 
 
-        private SubscriptionInfo FindDynamicSubscriptionTEventoRemove<TEventHandler>(string eventName)
+        private SubscriptionInfo FindDynamicSubscriptionToRemove<TEventHandler>(string eventName)
             where TEventHandler : IDynamicEventHandler
         {
-            return DoFindSubscriptionTEventoRemove(eventName, typeof(TEventHandler));
+            return DoFindSubscriptionToRemove(eventName, typeof(TEventHandler));
         }
 
 
-        private SubscriptionInfo FindSubscriptionTEventoRemove<TEvent, TEventHandler>()
+        private SubscriptionInfo FindSubscriptionToRemove<TEvent, TEventHandler>()
              where TEvent : Event
              where TEventHandler : IEventHandler<TEvent>
         {
             var eventName = GetEventKey<TEvent>();
-            return DoFindSubscriptionTEventoRemove(eventName, typeof(TEventHandler));
+            return DoFindSubscriptionToRemove(eventName, typeof(TEventHandler));
         }
 
-        private SubscriptionInfo DoFindSubscriptionTEventoRemove(string eventName, Type handlerType)
+        private SubscriptionInfo DoFindSubscriptionToRemove(string eventName, Type handlerType)
         {
             if (!HasSubscriptionsForEvent(eventName))
             {
@@ -146,15 +154,16 @@ namespace EventBus.Infrastructure
         public bool HasSubscriptionsForEvent<TEvent>() where TEvent : Event
         {
             var key = GetEventKey<TEvent>();
+
             return HasSubscriptionsForEvent(key);
         }
-        public bool HasSubscriptionsForEvent(string eventName) => _handlers.ContainsKey(eventName);
+        public bool HasSubscriptionsForEvent(string eventName)
+            => _handlers.ContainsKey(eventName);
 
-        public Type GetEventTypeByName(string eventName) => _eventTypes.SingleOrDefault(t => t.Name == eventName);
+        public Type GetEventTypeByName(string eventName)
+            => _eventTypes.SingleOrDefault(t => t.Name == eventName);
 
         public string GetEventKey<TEvent>()
-        {
-            return typeof(TEvent).Name;
-        }
+            => typeof(TEvent).Name;
     }
 }

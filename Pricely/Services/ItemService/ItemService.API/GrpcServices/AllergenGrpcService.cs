@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Common.Exceptions;
 using Grpc.Core;
 using ItemService.API.Protos;
@@ -9,12 +12,9 @@ using ItemService.Business.Queries.Allergens.GetAllergen;
 using ItemService.Business.Queries.Allergens.GetAllergens;
 using ItemService.Persistence.DTOModels;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Allergen = ItemService.API.Protos.Allergen;
 
-namespace ItemService.API.Controllers
+namespace ItemService.API.GrpcServices
 {
     public class AllergenGrpcService : AllergenService.AllergenServiceBase
     {

@@ -2,6 +2,9 @@
 
 namespace EventBus.Infrastructure.Models
 {
+    /// <summary>
+    /// Holds subscription handler information
+    /// </summary>
     public class SubscriptionInfo
     {
         public bool IsDynamic { get; }
